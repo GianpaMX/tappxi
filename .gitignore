@@ -19,3 +19,7 @@ gen/
 *.project
 *.settings
 local.properties
+
+
+server-tappxi/.buildpath
+
