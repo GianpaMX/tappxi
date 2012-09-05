@@ -19,8 +19,8 @@ require '../php-sdk/facebook.php';
 
 // Create our Application instance (replace this with your appId and secret).
 $facebook = new Facebook(array(
-  'appId'  => '338005582960026',
-  'secret' => '532bdbd3e2c1e3b75f45e5028cecbf7a',
+  'appId'  => '_ID_',
+  'secret' => '_SECRET_',
 ));
 
 $facebook->setAccessToken($_GET['access_token']);
