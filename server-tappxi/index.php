@@ -23,8 +23,13 @@ $facebook = new Facebook(array(
   'secret' => '532bdbd3e2c1e3b75f45e5028cecbf7a',
 ));
 
+$facebook->setAccessToken($_GET['access_token']);
+
+
+
 // Get User ID
 $user = $facebook->getUser();
+
 
 // We may or may not have this data based on whether the user is logged in.
 //
@@ -41,6 +46,9 @@ if ($user) {
     $user = null;
   }
 }
+
+die(print_r($user_profile,1));
+
 
 // Login or logout url will be needed depending on current user state.
 if ($user) {

@@ -1,17 +1,24 @@
 package cmdf2.tappxi;
 
-import android.os.Bundle;
-import android.app.Activity;
+import java.io.IOException;
+
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.TextView;
-import android.widget.Toast;
+import cmdf2.tappxi.api.Client;
 
-import com.facebook.android.*;
-import com.facebook.android.Facebook.*;
+import com.facebook.android.DialogError;
+import com.facebook.android.Facebook;
+import com.facebook.android.Facebook.DialogListener;
+import com.facebook.android.FacebookError;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 	Facebook facebook;
+	Client client;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,7 +33,22 @@ public class MainActivity extends Activity {
         facebook.authorize(this, new DialogListener() {
             @Override
             public void onComplete(Bundle values) {
-            	helloWorld.setText( helloWorld.getText() + "Complete");
+                client = new Client(values.getString("access_token"));
+            	
+                new AsyncTask<Void, Void, Void>() {
+                    protected Void doInBackground(Void... params) {
+                    	try {
+							client.connect();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							Log.e("tappxi", "IOException", e);
+						}
+						return null;
+                    }
+                    protected void onPostExecute(Void result) {
+                    	
+                    }
+                }.execute();
             }
 
             @Override
