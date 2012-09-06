@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.TextView;
+import android.view.View;
 import cmdf2.tappxi.api.Client;
 
 import com.facebook.android.DialogError;
@@ -26,9 +26,6 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         
         facebook = new Facebook(getString(R.string.facebook_app_id));
-        
-        final TextView helloWorld = (TextView) findViewById(R.id.helloWorld);
-        helloWorld.setText( helloWorld.getText() + " - ");
         
         facebook.authorize(this, new DialogListener() {
             @Override
@@ -53,17 +50,14 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onFacebookError(FacebookError error) {
-            	helloWorld.setText( helloWorld.getText() + "FacebookError");
             }
 
             @Override
             public void onError(DialogError e) {
-            	helloWorld.setText( helloWorld.getText() + "Error");
             }
 
             @Override
             public void onCancel() {
-            	helloWorld.setText( helloWorld.getText() + "Cancel");
             }
         });
     }
@@ -79,5 +73,10 @@ public class MainActivity extends FragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         facebook.authorizeCallback(requestCode, resultCode, data);
+    }
+    
+    public void searchDestinations(View view) {
+        Intent intent = new Intent(this, SearchDestinationsActivity.class);
+        startActivity(intent);
     }
 }
