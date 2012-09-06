@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.SearchView;
 
 import com.google.android.maps.MapActivity;
@@ -43,6 +44,18 @@ public class SearchDestinationsActivity extends MapActivity {
 
         return true;
     }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_search:
+                onSearchRequested();
+                return true;
+            default:
+                return false;
+        }
+    }
+
 
 	@Override
 	protected boolean isRouteDisplayed() {
