@@ -6,5 +6,6 @@
     <string name="title_activity_main">Tappxi</string>
     <string name="call_taxi">Call a Taxi</string>
     <string name="title_activity_search_destinations">Search Destinations</string>
-
+    <string name="search_hint">Search Destination</string>
+    <string name="menu_search">Search</string>
 </resources>
