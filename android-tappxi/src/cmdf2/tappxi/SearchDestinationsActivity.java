@@ -1,8 +1,11 @@
 package cmdf2.tappxi;
 
+import java.util.List;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -10,8 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
+import com.google.android.maps.OverlayItem;
 
 public class SearchDestinationsActivity extends MapActivity {
 
@@ -23,11 +29,24 @@ public class SearchDestinationsActivity extends MapActivity {
         MapView mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         
+
+        List<Overlay> mapOverlays = mapView.getOverlays();
+        Drawable drawable = this.getResources().getDrawable(R.drawable.taxi_stand_pin);
+        TaxiStandItemizedOverlay itemizedoverlay = new TaxiStandItemizedOverlay(drawable, this);
+        
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
           String query = intent.getStringExtra(SearchManager.QUERY);
           Log.d("tappxi", query);
+          
+          GeoPoint point = mapView.getMapCenter();
+          OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in the map center!");
+          
+          itemizedoverlay.addOverlay(overlayitem);
+          mapOverlays.add(itemizedoverlay);
+          
         }
+        
     }
     
     @Override
@@ -59,7 +78,6 @@ public class SearchDestinationsActivity extends MapActivity {
 
 	@Override
 	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
