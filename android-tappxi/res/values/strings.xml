@@ -8,4 +8,5 @@
     <string name="title_activity_search_destinations">Search Destinations</string>
     <string name="search_hint">Search Destination</string>
     <string name="menu_search">Search</string>
+    <string name="next_button">Next</string>
 </resources>

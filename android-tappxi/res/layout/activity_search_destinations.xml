@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.maps.MapView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mapview"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:clickable="true"
-    android:apiKey="@string/map_key"
-/>
+    android:orientation="vertical" >
+
+    <com.google.android.maps.MapView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mapview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:apiKey="@string/map_key"
+        android:clickable="true" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/next_button" 
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>
