@@ -51,32 +51,11 @@ class DefaultController extends Controller
      * @Method({"GET"})
      */
     public function getOffersAction(){
-        //$offers = $this->getDoctrine()->getRepository('TappxiApiBundle:Offer')->findAll();
-        /**
-         *
-        $of1 = new Entity\Offer();
-        $r1 = new Entity\Request();
-        $r2 = new Entity\Request();
-        $r1->setUser(new Entity\User());
-        $of1->setStand(new Entity\Stand());
-        $st1->setAddress(new Entity\Address());
-
-        $r2->setUser(new Entity\User());
-        $r1->setAddressStart(new Entity\Address());
-        $r1->setAddressEnd(new Entity\Address());
-        $of1->setRequest($r1);
-        $of2 = new Entity\Offer();
-        $st1 = new Entity\Stand();
-        $st1->setAddress(new Entity\Address());
-        $of2->setStand($st1);
-        $r2->setAddressStart(new Entity\Address());
-        $r2->setAddressEnd(new Entity\Address());
-        $of2->setRequest($r2);
-        $offers = array($of1, $of2);
-        */
-        return new Response(json_encode(array_map(function($offer){
-            return $offer->toJson();
-        }, $offers)));
+        $offers = $this->getDoctrine()->getRepository('TappxiApiBundle:Offer')->findAll();
+        $map = array('offers' => array_map(function($offer){
+            return $offer->toArray();
+        }, $offers));
+        return new Response(json_encode($map));
     }
 
 
