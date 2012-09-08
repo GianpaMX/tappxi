@@ -30,7 +30,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="22dp"
-        android:text="@string/taxi_is_here" />
+        android:text="@string/taxi_is_here" 
+        android:onClick="taxiIsHere"/>
 
     <TextView
         android:id="@+id/textView2"

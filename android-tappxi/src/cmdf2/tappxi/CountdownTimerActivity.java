@@ -1,9 +1,11 @@
 package cmdf2.tappxi;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 
 public class CountdownTimerActivity extends Activity {
@@ -25,6 +27,8 @@ public class CountdownTimerActivity extends Activity {
 			
 			@Override
 			public void onFinish() {
+		        Intent intent = new Intent(CountdownTimerActivity.this, PayActivity.class);
+		        startActivity(intent);
 			}
 		}.start();
     }
@@ -34,4 +38,10 @@ public class CountdownTimerActivity extends Activity {
         getMenuInflater().inflate(R.menu.activity_countdown_timer, menu);
         return true;
     }
+    
+    public void taxiIsHere(View view) {
+        Intent intent = new Intent(this, PayActivity.class);
+        startActivity(intent);
+    }
+    
 }
