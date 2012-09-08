@@ -57,7 +57,7 @@ class Stand
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -73,14 +73,14 @@ class Stand
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -96,14 +96,14 @@ class Stand
     public function setStartFare($startFare)
     {
         $this->startFare = $startFare;
-    
+
         return $this;
     }
 
     /**
      * Get startFare
      *
-     * @return float 
+     * @return float
      */
     public function getStartFare()
     {
@@ -119,14 +119,14 @@ class Stand
     public function setStatus($status)
     {
         $this->status = $status;
-    
+
         return $this;
     }
 
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -142,17 +142,31 @@ class Stand
     public function setAddress(\Tappxi\Bundle\ApiBundle\Entity\Address $address = null)
     {
         $this->address = $address;
-    
+
         return $this;
     }
 
     /**
      * Get address
      *
-     * @return Tappxi\Bundle\ApiBundle\Entity\Address 
+     * @return Tappxi\Bundle\ApiBundle\Entity\Address
      */
     public function getAddress()
     {
         return $this->address;
+    }
+
+    public function toArray(){
+        return array(
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'address' => $this->address->toArray(),
+            'start_fare' => $this->startFare,
+            'status' => $this->getStatus(),
+        );
+    }
+
+    public function toJson(){
+        return json_encode($this->toArray());
     }
 }

@@ -60,7 +60,7 @@ class Offer
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -76,14 +76,14 @@ class Offer
     public function setEta($eta)
     {
         $this->eta = $eta;
-    
+
         return $this;
     }
 
     /**
      * Get eta
      *
-     * @return integer 
+     * @return integer
      */
     public function getEta()
     {
@@ -99,14 +99,14 @@ class Offer
     public function setAproximateFare($aproximateFare)
     {
         $this->aproximateFare = $aproximateFare;
-    
+
         return $this;
     }
 
     /**
      * Get aproximateFare
      *
-     * @return float 
+     * @return float
      */
     public function getAproximateFare()
     {
@@ -122,14 +122,14 @@ class Offer
     public function setRequest(\Tappxi\Bundle\ApiBundle\Entity\Request $request = null)
     {
         $this->request = $request;
-    
+
         return $this;
     }
 
     /**
      * Get request
      *
-     * @return Tappxi\Bundle\ApiBundle\Entity\Request 
+     * @return Tappxi\Bundle\ApiBundle\Entity\Request
      */
     public function getRequest()
     {
@@ -145,17 +145,31 @@ class Offer
     public function setStand(\Tappxi\Bundle\ApiBundle\Entity\Stand $stand = null)
     {
         $this->stand = $stand;
-    
+
         return $this;
     }
 
     /**
      * Get stand
      *
-     * @return Tappxi\Bundle\ApiBundle\Entity\Stand 
+     * @return Tappxi\Bundle\ApiBundle\Entity\Stand
      */
     public function getStand()
     {
         return $this->stand;
+    }
+
+    public function toArray(){
+        return array(
+            'id' => $this->getId(),
+            'eta' => $this->getEta(),
+            'aproximate_fear' => $this->getAproximateFare(),
+            'request' => $this->getRequest()->toArray(),
+            'stand' => $this->getStand()->toArray(),
+        );
+    }
+
+    public function toJson(){
+        return json_encode($this->toArray());
     }
 }

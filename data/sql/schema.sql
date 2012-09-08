@@ -78,7 +78,7 @@ ENGINE = InnoDB;
 -- Table `tappxi`.`taxi`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `tappxi`.`taxi` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `stand_id` INT UNSIGNED NOT NULL ,
   `name` VARCHAR(45) NOT NULL ,
   `tag_number` VARCHAR(16) NOT NULL ,
