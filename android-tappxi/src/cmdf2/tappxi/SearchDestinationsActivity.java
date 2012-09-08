@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 
 import com.google.android.maps.GeoPoint;
@@ -80,5 +81,10 @@ public class SearchDestinationsActivity extends MapActivity {
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
+	
+    public void listOffers(View view) {
+        Intent intent = new Intent(this, TaxiOffersActivity.class);
+        startActivity(intent);
+    }
 
 }

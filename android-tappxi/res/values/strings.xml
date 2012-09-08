@@ -9,4 +9,9 @@
     <string name="search_hint">Search Destination</string>
     <string name="menu_search">Search</string>
     <string name="next_button">Next</string>
+    <string name="title_activity_taxi_offers">Taxi Offers</string>
+    <string name="eta">ETA</string>
+    <string name="fare">Fare</string>
+    <string name="stand">Stand</string>
+    <string name="select">Select</string>
 </resources>
