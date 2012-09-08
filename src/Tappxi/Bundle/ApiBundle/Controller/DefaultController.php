@@ -45,7 +45,6 @@ class DefaultController extends Controller
             $em->persist($session);
             $em->flush();
         }else{
-            //todo user no valido
         }
         return new Response($session->toJson());
     }
@@ -57,9 +56,11 @@ class DefaultController extends Controller
     public function newTaxiRequestAction(){
         $user = $this->getUser();
         $request = new Entity\Request();
+        $params = $this->getRequest()->request->all();
         $request->setUser($user);
-        $request->setAddressStart(new Entity\Address());
-        $request->setAddressEnd(new Entity\Address());
+        $request->setAddressStartFromArray($params);
+        $request->setAddressEndFromArray($params);
+        $this->getManager()->persist($request);
         return new Response($request->toJson());
     }
 
@@ -68,7 +69,7 @@ class DefaultController extends Controller
      * @Method({"GET"})
      */
     public function getOffersAction(){
-        $offers = $this->getDoctrine()->getRepository('TappxiApiBundle:Offer')->findAll();
+        $offers = $this->getOfferRepo()->findAll();
         $map = array('offers' => array_map(function($offer){
             return $offer->toArray();
         }, $offers));
@@ -98,9 +99,13 @@ class DefaultController extends Controller
      * @return Entity\User
      */
     private function getUserByToken($token){
-        $user = $this->getUserRepo()->findOneBy(array('token' => $token));
+        $session = $this->getSessionRepo()->findOneBy(array('token' => $token));
+        $user = null;
+        if( $session instanceof Entity\Session ) {
+            $user = $session->getUser();
+        }
         if(!$user){
-            throw new \Symfony\Component\HttpKernel\Exception\HttpException(501, "token invalido");
+            throw new \Symfony\Component\HttpKernel\Exception\HttpException(401, "token invalido");
         }
         return $user;
     }

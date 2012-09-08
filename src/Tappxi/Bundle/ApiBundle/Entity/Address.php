@@ -256,6 +256,18 @@ class Address
         );
     }
 
+    public static function fromArray($array){
+        $address = new Address();
+        $address->setStreet($array['street']);
+        $address->setSettlement($array['settlement']);
+        $address->setCity($array['city']);
+        $address->setState($array['state']);
+        $address->setZipCode($array['zip_code']);
+        $address->setLat($array['lat']);
+        $address->setLong($array['long']);
+        return $address;
+    }
+
     public function toJson(){
         return json_encode($this->toArray());
     }

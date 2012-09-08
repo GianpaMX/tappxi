@@ -2,6 +2,7 @@
 
 namespace Tappxi\Bundle\ApiBundle\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -125,8 +126,31 @@ class Request
     public function setAddressStart(\Tappxi\Bundle\ApiBundle\Entity\Address $addressStart = null)
     {
         $this->addressStart = $addressStart;
-
         return $this;
+    }
+
+    public function setAddressStartFromArray($array){
+        $this->setAddressStart(Address::fromArray(array(
+            'street' => $array['start_address_street'],
+            'settlement' => $array['start_address_settlement'],
+            'city' => $array['start_address_city'],
+            'state' => $array['start_address_state'],
+            'zip_code' => $array['start_address_zip_code'],
+            'lat' => $array['start_address_lat'],
+            'long' => $array['start_address_long'],
+        )));
+    }
+
+    public function setAddressEndFromArray($array){
+        $this->setAddressEnd(Address::fromArray(array(
+            'street' => $array['end_address_street'],
+            'settlement' => $array['end_address_settlement'],
+            'city' => $array['end_address_city'],
+            'state' => $array['end_address_state'],
+            'zip_code' => $array['end_address_zip_code'],
+            'lat' => $array['end_address_lat'],
+            'long' => $array['end_address_long'],
+        )));
     }
 
     /**
@@ -148,7 +172,6 @@ class Request
     public function setAddressEnd(\Tappxi\Bundle\ApiBundle\Entity\Address $addressEnd = null)
     {
         $this->addressEnd = $addressEnd;
-
         return $this;
     }
 
