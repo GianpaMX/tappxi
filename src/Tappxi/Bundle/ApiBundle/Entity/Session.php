@@ -50,7 +50,7 @@ class Session
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -66,14 +66,14 @@ class Session
     public function setFbToken($fbToken)
     {
         $this->fbToken = $fbToken;
-    
+
         return $this;
     }
 
     /**
      * Get fbToken
      *
-     * @return string 
+     * @return string
      */
     public function getFbToken()
     {
@@ -89,14 +89,14 @@ class Session
     public function setToken($token)
     {
         $this->token = $token;
-    
+
         return $this;
     }
 
     /**
      * Get token
      *
-     * @return string 
+     * @return string
      */
     public function getToken()
     {
@@ -112,17 +112,28 @@ class Session
     public function setUser(\Tappxi\Bundle\ApiBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return Tappxi\Bundle\ApiBundle\Entity\User 
+     * @return Tappxi\Bundle\ApiBundle\Entity\User
      */
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function toArray(){
+        return array(
+            'fb_token' => $this->getFbToken(),
+            'token' => $this->getToken(),
+        );
+    }
+
+    public function toJson(){
+        return json_encode($this->toArray());
     }
 }

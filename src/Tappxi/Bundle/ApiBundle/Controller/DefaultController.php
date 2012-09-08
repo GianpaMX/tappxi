@@ -5,6 +5,9 @@ namespace Tappxi\Bundle\ApiBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
+use Tappxi\Bundle\ApiBundle\Entity;
 
 class DefaultController extends Controller
 {
@@ -16,4 +19,20 @@ class DefaultController extends Controller
     {
         return array();
     }
+
+    /**
+     * @Route("/login", defaults={"_format"="json"})
+     * @Method({"POST"})
+     */
+    public function loginAction()
+    {
+        $fbToken = $this->getRequest()->request->get('fb_token');
+        $token = 123;
+        $session = new Entity\Session();
+        $session->setFbToken($fbToken);
+        $session->setToken($token);
+        return new Response($session->toJson());
+    }
+
+
 }
