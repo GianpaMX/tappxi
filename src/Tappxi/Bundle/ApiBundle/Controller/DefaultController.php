@@ -27,10 +27,26 @@ class DefaultController extends Controller
     public function loginAction()
     {
         $fbToken = $this->getRequest()->request->get('fb_token');
-        $token = 123;
-        $session = new Entity\Session();
-        $session->setFbToken($fbToken);
-        $session->setToken($token);
+        $user = $this->getUserByFbToken($fbToken);
+        $em = $this->getManager();
+        if ( $user ){
+            $token = md5($user->getEmail() . microtime() . $fbToken);
+
+            $sessions = $this->getSessionRepo()->findBy(array('user' => $user->getId()));
+            array_walk($sessions, function ($session) use($em){
+                $em->remove($session);
+            });
+
+            $session = new Entity\Session();
+            $session->setUser($user);
+            $session->setFbToken($fbToken);
+            $session->setToken($token);
+
+            $em->persist($session);
+            $em->flush();
+        }else{
+            //todo user no valido
+        }
         return new Response($session->toJson());
     }
 
@@ -39,8 +55,9 @@ class DefaultController extends Controller
      * @Method({"POST"})
      */
     public function newTaxiRequestAction(){
+        $user = $this->getUser();
         $request = new Entity\Request();
-        $request->setUser(new Entity\User());
+        $request->setUser($user);
         $request->setAddressStart(new Entity\Address());
         $request->setAddressEnd(new Entity\Address());
         return new Response($request->toJson());
@@ -57,6 +74,111 @@ class DefaultController extends Controller
         }, $offers));
         return new Response(json_encode($map));
     }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
+    public function getManager(){
+        return $this->getDoctrine()->getManager();
+    }
+
+    /**
+     *
+     * @param unknown_type $fbToken
+     * @return Entity\User
+     */
+    private function getUserByFbToken($fbToken){
+        // TODO facebook
+        return $this->getUserRepo()->findOneById(1);
+    }
+
+    /**
+     *
+     * @param unknown_type $token
+     * @return Entity\User
+     */
+    private function getUserByToken($token){
+        $user = $this->getUserRepo()->findOneBy(array('token' => $token));
+        if(!$user){
+            throw new \Symfony\Component\HttpKernel\Exception\HttpException(501, "token invalido");
+        }
+        return $user;
+    }
+
+    /**
+     *
+     * @param unknown_type $token
+     * @return Entity\User
+     */
+    public function getUser(){
+        $request = $this->getRequest();
+        return $this->getUserByToken($request->request->get('token'));
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private function getUserRepo(){
+        return $this->getDoctrine()->getRepository('TappxiApiBundle:User');
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private function getSessionRepo(){
+        return $this->getDoctrine()->getRepository('TappxiApiBundle:Session');
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private function getAddressRepo(){
+        return $this->getDoctrine()->getRepository('TappxiApiBundle:Address');
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private function getMovementRepo(){
+        return $this->getDoctrine()->getRepository('TappxiApiBundle:Movement');
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private function getOfferRepo(){
+        return $this->getDoctrine()->getRepository('TappxiApiBundle:Offer');
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private function getRequestRepo(){
+        return $this->getDoctrine()->getRepository('TappxiApiBundle:Request');
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private function getStandRepo(){
+        return $this->getDoctrine()->getRepository('TappxiApiBundle:Stand');
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private function getTaxiRepo(){
+        return $this->getDoctrine()->getRepository('TappxiApiBundle:Taxi');
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private function getTripRepo(){
+        return $this->getDoctrine()->getRepository('TappxiApiBundle:Trip');
+    }
+
+
 
 
 }
