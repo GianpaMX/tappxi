@@ -61,7 +61,7 @@ class User
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -77,14 +77,14 @@ class User
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -100,14 +100,14 @@ class User
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -123,14 +123,14 @@ class User
     public function setBalance($balance)
     {
         $this->balance = $balance;
-    
+
         return $this;
     }
 
     /**
      * Get balance
      *
-     * @return float 
+     * @return float
      */
     public function getBalance()
     {
@@ -146,14 +146,14 @@ class User
     public function setStatus($status)
     {
         $this->status = $status;
-    
+
         return $this;
     }
 
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -169,17 +169,32 @@ class User
     public function setRole($role)
     {
         $this->role = $role;
-    
+
         return $this;
     }
 
     /**
      * Get role
      *
-     * @return integer 
+     * @return integer
      */
     public function getRole()
     {
         return $this->role;
+    }
+
+    public function toArray(){
+        return array(
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'role' => $this->getRole(),
+            'status' => $this->getStatus(),
+            'email' => $this->getEmail(),
+            'balance' => $this->getBalance(),
+        );
+    }
+
+    public function toJson(){
+        return json_encode($this->toArray());
     }
 }

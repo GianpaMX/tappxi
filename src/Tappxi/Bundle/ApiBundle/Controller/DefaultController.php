@@ -34,5 +34,17 @@ class DefaultController extends Controller
         return new Response($session->toJson());
     }
 
+    /**
+     * @Route("/taxi/request", defaults={"_format"="json"})
+     * @Method({"POST"})
+     */
+    public function newTaxiRequestAction(){
+        $request = new Entity\Request();
+        $request->setUser(new Entity\User());
+        $request->setAddressStart(new Entity\Address());
+        $request->setAddressEnd(new Entity\Address());
+        return new Response($request->toJson());
+    }
+
 
 }

@@ -75,7 +75,7 @@ class Address
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -91,14 +91,14 @@ class Address
     public function setStreet($street)
     {
         $this->street = $street;
-    
+
         return $this;
     }
 
     /**
      * Get street
      *
-     * @return string 
+     * @return string
      */
     public function getStreet()
     {
@@ -114,14 +114,14 @@ class Address
     public function setSettlement($settlement)
     {
         $this->settlement = $settlement;
-    
+
         return $this;
     }
 
     /**
      * Get settlement
      *
-     * @return string 
+     * @return string
      */
     public function getSettlement()
     {
@@ -137,14 +137,14 @@ class Address
     public function setCity($city)
     {
         $this->city = $city;
-    
+
         return $this;
     }
 
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -160,14 +160,14 @@ class Address
     public function setState($state)
     {
         $this->state = $state;
-    
+
         return $this;
     }
 
     /**
      * Get state
      *
-     * @return string 
+     * @return string
      */
     public function getState()
     {
@@ -183,14 +183,14 @@ class Address
     public function setZipCode($zipCode)
     {
         $this->zipCode = $zipCode;
-    
+
         return $this;
     }
 
     /**
      * Get zipCode
      *
-     * @return string 
+     * @return string
      */
     public function getZipCode()
     {
@@ -206,14 +206,14 @@ class Address
     public function setLat($lat)
     {
         $this->lat = $lat;
-    
+
         return $this;
     }
 
     /**
      * Get lat
      *
-     * @return float 
+     * @return float
      */
     public function getLat()
     {
@@ -229,17 +229,34 @@ class Address
     public function setLong($long)
     {
         $this->long = $long;
-    
+
         return $this;
     }
 
     /**
      * Get long
      *
-     * @return float 
+     * @return float
      */
     public function getLong()
     {
         return $this->long;
+    }
+
+    public function toArray(){
+        return array(
+            'id' => $this->getId(),
+            'street' => $this->getStreet(),
+            'settlement' => $this->getSettlement(),
+            'city' => $this->getCity(),
+            'state' => $this->getState(),
+            'zip_code' => $this->getZipCode(),
+            'lat' => $this->getLat(),
+            'long' => $this->getLong(),
+        );
+    }
+
+    public function toJson(){
+        return json_encode($this->toArray());
     }
 }

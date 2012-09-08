@@ -63,7 +63,7 @@ class Request
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -79,14 +79,14 @@ class Request
     public function setStatus($status)
     {
         $this->status = $status;
-    
+
         return $this;
     }
 
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -102,14 +102,14 @@ class Request
     public function setUser(\Tappxi\Bundle\ApiBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return Tappxi\Bundle\ApiBundle\Entity\User 
+     * @return Tappxi\Bundle\ApiBundle\Entity\User
      */
     public function getUser()
     {
@@ -125,14 +125,14 @@ class Request
     public function setAddressStart(\Tappxi\Bundle\ApiBundle\Entity\Address $addressStart = null)
     {
         $this->addressStart = $addressStart;
-    
+
         return $this;
     }
 
     /**
      * Get addressStart
      *
-     * @return Tappxi\Bundle\ApiBundle\Entity\Address 
+     * @return Tappxi\Bundle\ApiBundle\Entity\Address
      */
     public function getAddressStart()
     {
@@ -148,17 +148,31 @@ class Request
     public function setAddressEnd(\Tappxi\Bundle\ApiBundle\Entity\Address $addressEnd = null)
     {
         $this->addressEnd = $addressEnd;
-    
+
         return $this;
     }
 
     /**
      * Get addressEnd
      *
-     * @return Tappxi\Bundle\ApiBundle\Entity\Address 
+     * @return Tappxi\Bundle\ApiBundle\Entity\Address
      */
     public function getAddressEnd()
     {
         return $this->addressEnd;
+    }
+
+    public function toArray(){
+        return array(
+            'id' => $this->getId(),
+            'status' => $this->getStatus(),
+            'user' => $this->getUser()->toArray(),
+            'address_start' => $this->getAddressStart()->toArray(),
+            'address_end' => $this->getAddressEnd()->toArray(),
+        );
+    }
+
+    public function toJson(){
+        return json_encode($this->toArray());
     }
 }
