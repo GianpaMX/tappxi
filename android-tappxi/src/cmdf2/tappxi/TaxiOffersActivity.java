@@ -3,6 +3,7 @@ package cmdf2.tappxi;
 import java.util.ArrayList;
 
 import android.app.ExpandableListActivity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import cmdf2.tappxi.model.bean.Address;
 import cmdf2.tappxi.model.bean.Offer;
@@ -31,11 +33,23 @@ public class TaxiOffersActivity extends ExpandableListActivity {
     }
 
     @Override
+	public boolean onChildClick(ExpandableListView parent, View v,
+			int groupPosition, int childPosition, long id) {
+    	
+    	if(childPosition == 3) {
+            Intent intent = new Intent(this, CountdownTimerActivity.class);
+            startActivity(intent);
+    	}
+    	
+		return super.onChildClick(parent, v, groupPosition, childPosition, id);
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_taxi_offers, menu);
         return true;
     }
-        
+            
     public class TaxiOffersExpandableListAdapter extends BaseExpandableListAdapter {
     	ArrayList<Offer> offers = new ArrayList<Offer>();
 

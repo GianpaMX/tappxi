@@ -14,4 +14,12 @@
     <string name="fare">Fare</string>
     <string name="stand">Stand</string>
     <string name="select">Select</string>
+    <string name="title_activity_countdown_timer">Countdown Timer</string>
+    <string name="balance">Balance</string>
+    <string name="taxi_is_here">Taxi is here</string>
+    <string name="cancel">Cancel</string>
+    <string name="title_activity_pay">Pay</string>
+    <string name="pay">Pay</string>
+    <string name="wrong">Wrong</string>
+
 </resources>
