@@ -7,7 +7,7 @@
     <field name="amount" type="float" column="amount"/>
     <field name="type" type="string" column="type" length="45"/>
     <field name="createdAt" type="datetime" column="created_at"/>
-    <many-to-one field="user" target-entity="Users">
+    <many-to-one field="user" target-entity="User">
       <join-columns>
         <join-column name="user_id" referenced-column-name="id"/>
       </join-columns>

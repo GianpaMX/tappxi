@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Offers" table="offers">
+  <entity name="Session" table="session">
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="eta" type="integer" column="eta"/>
-    <field name="aproximateFare" type="float" column="aproximate_fare"/>
-    <many-to-one field="stand" target-entity="Stand">
+    <field name="fbToken" type="string" column="fb_token" length="255"/>
+    <field name="token" type="string" column="token" length="255"/>
+    <many-to-one field="user" target-entity="User">
       <join-columns>
-        <join-column name="stand_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="request" target-entity="Request">
-      <join-columns>
-        <join-column name="request_id" referenced-column-name="id"/>
+        <join-column name="user_id" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
   </entity>

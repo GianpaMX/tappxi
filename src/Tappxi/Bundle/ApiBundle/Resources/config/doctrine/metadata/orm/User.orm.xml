@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Sessions" table="sessions">
+  <entity name="User" table="user">
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="fbToken" type="string" column="fb_token" length="255"/>
-    <field name="token" type="string" column="token" length="255"/>
-    <many-to-one field="user" target-entity="Users">
-      <join-columns>
-        <join-column name="user_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
+    <field name="name" type="string" column="name" length="145"/>
+    <field name="email" type="string" column="email" length="120"/>
+    <field name="balance" type="float" column="balance"/>
+    <field name="status" type="smallint" column="status"/>
+    <field name="role" type="smallint" column="role"/>
   </entity>
 </doctrine-mapping>

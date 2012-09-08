@@ -2,11 +2,13 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
+CREATE SCHEMA IF NOT EXISTS `tappxi` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `tappxi` ;
 
 -- -----------------------------------------------------
--- Table `tappxi`.`users`
+-- Table `tappxi`.`user`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `tappxi`.`users` (
+CREATE  TABLE IF NOT EXISTS `tappxi`.`user` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(145) NOT NULL ,
   `email` VARCHAR(120) NOT NULL ,
@@ -19,9 +21,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `tappxi`.`sessions`
+-- Table `tappxi`.`session`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `tappxi`.`sessions` (
+CREATE  TABLE IF NOT EXISTS `tappxi`.`session` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `user_id` INT UNSIGNED NOT NULL ,
   `fb_token` VARCHAR(255) NOT NULL ,
@@ -30,7 +32,7 @@ CREATE  TABLE IF NOT EXISTS `tappxi`.`sessions` (
   INDEX `fk_sessions_users` (`user_id` ASC) ,
   CONSTRAINT `fk_sessions_users`
     FOREIGN KEY (`user_id` )
-    REFERENCES `tappxi`.`users` (`id` )
+    REFERENCES `tappxi`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -108,7 +110,7 @@ CREATE  TABLE IF NOT EXISTS `tappxi`.`request` (
   INDEX `fk_request_address2` (`address_end_id` ASC) ,
   CONSTRAINT `fk_request_users1`
     FOREIGN KEY (`user_id` )
-    REFERENCES `tappxi`.`users` (`id` )
+    REFERENCES `tappxi`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_request_address1`
@@ -125,9 +127,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `tappxi`.`offers`
+-- Table `tappxi`.`offer`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `tappxi`.`offers` (
+CREATE  TABLE IF NOT EXISTS `tappxi`.`offer` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `request_id` INT UNSIGNED NOT NULL ,
   `stand_id` INT UNSIGNED NOT NULL ,
@@ -162,7 +164,7 @@ CREATE  TABLE IF NOT EXISTS `tappxi`.`movement` (
   INDEX `fk_movement_users1` (`user_id` ASC) ,
   CONSTRAINT `fk_movement_users1`
     FOREIGN KEY (`user_id` )
-    REFERENCES `tappxi`.`users` (`id` )
+    REFERENCES `tappxi`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -191,7 +193,7 @@ CREATE  TABLE IF NOT EXISTS `tappxi`.`trip` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_trip_offers1`
     FOREIGN KEY (`offer_id` )
-    REFERENCES `tappxi`.`offers` (`id` )
+    REFERENCES `tappxi`.`offer` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_trip_taxi1`
