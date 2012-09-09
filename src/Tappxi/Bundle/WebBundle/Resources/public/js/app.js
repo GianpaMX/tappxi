@@ -23,7 +23,8 @@ define(['backbone',"marionette", "vendor/URI"], function(Backbone, Marionette){
     return URI("http://localhost/tappxi/web/app_dev.php/api/")
       .filename(resource)
       .search({
-        't': (new Date()).getTime()
+        't': (new Date()).getTime(),
+        'token': sessionStorage.token
       });
   };
 

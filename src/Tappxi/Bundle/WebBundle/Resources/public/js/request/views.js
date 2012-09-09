@@ -19,7 +19,6 @@ function(app, Marionette, Models, Collections, text){
       serializeData: function(){
         return {
           'requests': this.collection.toJSON(),
-          'roles': this.options.roles
         };
       },
       events: {
@@ -34,7 +33,26 @@ function(app, Marionette, Models, Collections, text){
     });
 
     var RequestEditView = Marionette.ItemView.extend({
-      template: templates.filter("#request-edit-template")
+      template: templates.filter("#request-edit-template"),
+      events: {
+    	  'submit': 'onSubmit',
+      },
+      onSubmit: function(e){
+    	  console.log(this.model.toJSON());
+    	  var eta = this.$('#eta').val();
+    	  var fare = this.$('#fare').val();
+    	  e.preventDefault();
+          e.stopPropagation();
+    	  var offer = new Models.Offer();
+    	  
+    	  $.post(offer.url(), {
+    		  eta: eta,
+    		  fare: fare,
+    		  request_id: this.model.get('id')
+    	  }).done(function(){
+    		  
+    	  });
+      }
     });
 
     this.List = RequestListView;

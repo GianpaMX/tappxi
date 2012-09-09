@@ -1,4 +1,4 @@
-define(["app", "Request/views", "Request/models", "Request/collections"], 
+define(["app", "request/views", "request/models", "request/collections"], 
   function(app, Views, Models, Collections){
  
   var module = new Module(function() {
@@ -11,28 +11,36 @@ define(["app", "Request/views", "Request/models", "Request/collections"],
     this.Models = Models;	
     this.Collections = Collections;	
 
-    console.log("load RequestModule");
+    console.log("load requestModule");
   });
 
   app.addInitializer(function(options){
-
+	var currentInverval = null;
     var Controller = Backbone.Router.extend({
       routes : {
-        "Request/list" : "list",
-        "Request/edit/:id": "edit"
+        "request/list" : "list",
+        "request/edit/:id": "edit"
       },
       list: function(){
         module.init();
         app.vent.trigger("addNewTab", {
           'target':'tabcontainer1', 
-          'actionId': 'Request-list',
-          'title': 'Sitios de Taxis',
+          'actionId': 'request-list',
+          'title': 'Peticiones Pendientes',
           'success': function(el){
-        	  var Requests = new module.Collections.Requests(); 
-              var view = new module.Views.List({'el': el, 'collection': Requests});
-              Requests.fetch().done(function(){
+        	  var requests = new module.Collections.Requests();
+              var view = new module.Views.List({'el': el, 'collection': requests});
+              if(currentInverval){
+            	  clearInterval(currentInverval);
+              }
+              requests.fetch().done(function(){
             	  view.render();  
-              })
+              });
+              currentInverval = setInterval(function(){
+        		  requests.fetch().done(function(){
+                	  view.render();  
+                  });  
+        	  }, 3000);
           }        
         });
       }
@@ -40,13 +48,13 @@ define(["app", "Request/views", "Request/models", "Request/collections"],
 
     var controller = new Controller();
 
-    app.vent.on('Request-edit', function(model){
+    app.vent.on('request-edit', function(model){
       var id = model.get('id');
-      controller.navigate('/Request/edit/' + id);
+      controller.navigate('/request/edit/' + id);
       app.vent.trigger("addNewTab", {
         'target':'tabcontainer2', 
-        'actionId': 'Request-edit-' + id,
-        'title': model.get('name'),
+        'actionId': 'request-edit-' + id,
+        'title': model.get('user').name,
         'success': function(el) {
           var view = new module.Views.Edit({'model': model, 'el': el});
           view.render();

@@ -4762,5 +4762,5 @@ body {
 }
 
 .form-horizontal .control-label {
-  width: auto;
+  min-width: 80px;
 }

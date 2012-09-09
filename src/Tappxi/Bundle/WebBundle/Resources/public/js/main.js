@@ -25,6 +25,7 @@ require([
   "main/module",
   "user/module",
   "stand/module",
+  "request/module",
   ], function () {
     var app = require('app');
     var MainModule = require("main/module");

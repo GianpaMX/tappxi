@@ -6,7 +6,7 @@ define(["backbone", "request/models", "app"], function(Backbone, Models, app){
     var Requests = Backbone.Collection.extend({
       model: Models.Request,
       url: function(){
-    	  return app.rest('request');
+    	  return app.rest('requests');
       }
       
     });

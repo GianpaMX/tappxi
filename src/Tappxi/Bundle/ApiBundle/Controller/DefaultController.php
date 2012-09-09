@@ -82,8 +82,10 @@ class DefaultController extends Controller
      */
     public function getRequestsAction(){
         $list = array();
-        $this->getRequestRepo()->findBy(array('status'=>Entity\Request::STATUS_ACTIVE));
-
+        $requests = $this->getRequestRepo()->findBy(array('status'=> Entity\Request::STATUS_ACTIVE));
+        $list = array_map(function ($req){
+            return $req->toArray();
+        }, $requests);
         return new Response(json_encode($list));
     }
 
@@ -103,6 +105,32 @@ class DefaultController extends Controller
         }
 
         return new Response(json_encode($list));
+    }
+
+    /**
+     * @Route("/newoffer", defaults={"_format"="json"})
+     * @Method({"POST"})
+     */
+    public function newOfferAction(){
+        $user = $this->getUserStand();
+        if(!$user){
+            throw $this->createNotFoundException("No existe el usuario");
+        }
+        $req = $this->getRequest()->request;
+        $request = $this->getRequestRepo()->find($req->get('request_id'));
+        if(!$request){
+            throw $this->createNotFoundException("No existe la peticion");
+        }
+
+        $offer = new Entity\Offer();
+        $offer->setEta($req->get('eta'));
+        $offer->setAproximateFare($req->get('fare'));
+        $offer->setStand($user->getStand());
+        $offer->setRequest($request);
+        $this->getManager()->persist($offer);
+        $this->getManager()->flush();
+
+        return new Response(json_encode(array()));
     }
 
     /**
@@ -388,6 +416,16 @@ class DefaultController extends Controller
     public function getUser(){
         $request = $this->getRequest();
         return $this->getUserByToken($request->request->get('token'));
+    }
+
+    /**
+     *
+     * @param unknown_type $token
+     * @return Entity\User
+     */
+    public function getUserStand(){
+        $request = $this->getRequest();
+        return $this->getUserByToken($request->query->get('token'));
     }
 
     /**
