@@ -81,8 +81,15 @@ class DefaultController extends Controller
      * @Method({"GET"})
      */
     public function getRequestsAction(){
+        $user = $this->getUserStand();
+        $stand = $user->getStand();
         $list = array();
         $requests = $this->getRequestRepo()->findBy(array('status'=> Entity\Request::STATUS_ACTIVE));
+        $self = $this;
+        $requests = array_filter($requests, function($req) use($stand, $self){
+            $offers = $self->getOfferRepo()->findBy(array('stand' => $stand, 'request' => $req->getId()));
+            return count($offers) == 0;
+        });
         $list = array_map(function ($req){
             return $req->toArray();
         }, $requests);
@@ -382,7 +389,7 @@ class DefaultController extends Controller
      * @param unknown_type $fbToken
      * @return Entity\User
      */
-    private function getUserByFbToken($fbToken){
+    public function getUserByFbToken($fbToken){
         // TODO facebook
         return $this->getUserRepo()->findOneById(1);
     }
@@ -392,7 +399,7 @@ class DefaultController extends Controller
      * @param unknown_type $token
      * @return Entity\User
      */
-    private function getUserByToken($token){
+    public function getUserByToken($token){
         $session = $this->getSessionRepo()->findOneBy(array('token' => $token));
         $user = null;
         if( $session instanceof Entity\Session ) {
@@ -404,7 +411,7 @@ class DefaultController extends Controller
         return $user;
     }
 
-    private function cancelRequest(Entity\Request $request){
+    public function cancelRequest(Entity\Request $request){
         $request->setStatus(Entity\Request::STATUS_CANCELLED);
     }
 
@@ -431,63 +438,63 @@ class DefaultController extends Controller
     /**
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    private function getUserRepo(){
+    public function getUserRepo(){
         return $this->getDoctrine()->getRepository('TappxiApiBundle:User');
     }
 
     /**
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    private function getSessionRepo(){
+    public function getSessionRepo(){
         return $this->getDoctrine()->getRepository('TappxiApiBundle:Session');
     }
 
     /**
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    private function getAddressRepo(){
+    public function getAddressRepo(){
         return $this->getDoctrine()->getRepository('TappxiApiBundle:Address');
     }
 
     /**
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    private function getMovementRepo(){
+    public function getMovementRepo(){
         return $this->getDoctrine()->getRepository('TappxiApiBundle:Movement');
     }
 
     /**
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    private function getOfferRepo(){
+    public function getOfferRepo(){
         return $this->getDoctrine()->getRepository('TappxiApiBundle:Offer');
     }
 
     /**
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    private function getRequestRepo(){
+    public function getRequestRepo(){
         return $this->getDoctrine()->getRepository('TappxiApiBundle:Request');
     }
 
     /**
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    private function getStandRepo(){
+    public function getStandRepo(){
         return $this->getDoctrine()->getRepository('TappxiApiBundle:Stand');
     }
 
     /**
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    private function getTaxiRepo(){
+    public function getTaxiRepo(){
         return $this->getDoctrine()->getRepository('TappxiApiBundle:Taxi');
     }
 
     /**
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    private function getTripRepo(){
+    public function getTripRepo(){
         return $this->getDoctrine()->getRepository('TappxiApiBundle:Trip');
     }
 
@@ -496,7 +503,7 @@ class DefaultController extends Controller
      * @param Entity\User $user
      * @return Entity\Request
      */
-    private function getRequestActive(Entity\User $user){
+    public function getRequestActive(Entity\User $user){
         return $this->getRequestRepo()->findOneBy(array(
             'user' => $user->getId(),
             'status' => Entity\Request::STATUS_ACTIVE,
