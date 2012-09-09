@@ -26,7 +26,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         
         
-        client = new Client();
+        client = Client.getInstance();
         client.setApiServer("http://172.16.128.6/tappxi/web/app_dev.php/api");
         
         new AsyncTask<Void, Void, Void>() {

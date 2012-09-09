@@ -17,15 +17,25 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import android.util.Log;
+import cmdf2.tappxi.model.bean.Address;
 
 public class Client {
+	private static Client instance = null;
+
 	private String apiServer;
 	private HttpClient httpClient;
 
 	private String token;
 
-	public Client() {
+	protected Client() {
 		httpClient = new DefaultHttpClient();
+	}
+
+	public static Client getInstance() {
+		if (instance == null) {
+			instance = new Client();
+		}
+		return instance;
 	}
 
 	public void login(String fbToken) throws IOException {
@@ -37,15 +47,37 @@ public class Client {
 
 		HttpResponse httpResponse = httpClient.execute(httpPost);
 		String json = EntityUtils.toString(httpResponse.getEntity());
-		
-		 try {
+
+		try {
 			JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
 			token = object.getString("token");
 		} catch (JSONException e) {
 			Log.e("tappxi", "JSONException", e);
 		}
 	}
-	
+
+	public void taxiRequest(Address address) throws IOException {
+		HttpPost httpPost = new HttpPost(apiServer + "/taxi/request");
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("token", token));
+
+		nameValuePairs.addAll(address.getNameValuePairs());
+
+		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		String json = EntityUtils.toString(httpResponse.getEntity());
+
+		Log.d("tappxi", json);
+
+		// try {
+		// JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
+		// token = object.getString("token");
+		// } catch (JSONException e) {
+		// Log.e("tappxi", "JSONException", e);
+		// }
+	}
+
 	public String getApiServer() {
 		return apiServer;
 	}

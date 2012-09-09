@@ -1,6 +1,11 @@
 package cmdf2.tappxi.model.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import com.google.android.maps.GeoPoint;
 
@@ -87,4 +92,21 @@ public class Address implements Serializable {
 	public String toString() {
 		return getStreet() + ", " + getSettlement() + ", " + getCity() + ", " + getState() + ", " + getZipCode();
 	}
+	
+	public Collection<NameValuePair> getNameValuePairs(String prefix) {
+		Collection<NameValuePair> collection = new ArrayList<NameValuePair>();
+		collection.add(new BasicNameValuePair(prefix + "street", getStreet()));
+		collection.add(new BasicNameValuePair(prefix + "settlement", getSettlement()));
+		collection.add(new BasicNameValuePair(prefix + "city", getCity()));
+		collection.add(new BasicNameValuePair(prefix + "state", getState()));
+		collection.add(new BasicNameValuePair(prefix + "zip_code", getZipCode()));
+		collection.add(new BasicNameValuePair(prefix + "latitude", String.valueOf(latitude)));
+		collection.add(new BasicNameValuePair(prefix + "longitude", String.valueOf(longitude)));
+		
+		return collection;
+	}
+	public Collection<NameValuePair> getNameValuePairs() {
+		return getNameValuePairs("");
+	}
+
 }
