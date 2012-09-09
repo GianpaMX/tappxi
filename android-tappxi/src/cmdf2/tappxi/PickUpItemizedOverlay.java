@@ -261,5 +261,9 @@ public class PickUpItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	public GeoPoint getPickUpPoint() {
 		return pickUpOverlayItem.getPoint();
 	}
+	
+	public void setPickUpPoint(GeoPoint pickupPoint) {
+		pickUpOverlayItem = moveItem(pickUpOverlayItem, pickupPoint);
+	}
 
 }

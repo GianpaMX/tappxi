@@ -8,7 +8,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import cmdf2.tappxi.model.bean.Address;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -29,6 +29,7 @@ import com.google.android.maps.Overlay;
 public class SearchDestinationsActivity extends MapActivity {
 	private Geocoder geoCoder;
 	private PickUpItemizedOverlay pickUpItemizedOverlay;
+	String query;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,34 +57,16 @@ public class SearchDestinationsActivity extends MapActivity {
 
 		Intent intent = getIntent();
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-			String query = intent.getStringExtra(SearchManager.QUERY);
+			query = intent.getStringExtra(SearchManager.QUERY);
 			try {
-				List<Address> addresses = geoCoder
+				List<android.location.Address> addresses = geoCoder
 						.getFromLocationName(query, 5);
 				if (addresses.size() > 0) {
 					GeoPoint point = new GeoPoint((int) (addresses.get(0)
 							.getLatitude() * 1E6), (int) (addresses.get(0)
 							.getLongitude() * 1E6));
-					String address = query;
-					List<Address> reverseAddresses = geoCoder.getFromLocation(
-							point.getLatitudeE6() / 1E6,
-							point.getLongitudeE6() / 1E6, 1);
-					if (reverseAddresses.size() > 0) {
-						address = reverseAddresses.get(0).getThoroughfare();
-						address += " "
-								+ reverseAddresses.get(0).getSubThoroughfare();
-						address += ", "
-								+ reverseAddresses.get(0).getSubLocality();
-						address += ", "
-								+ reverseAddresses.get(0).getSubAdminArea();
-						address += ", "
-								+ reverseAddresses.get(0).getPostalCode();
-						address += ", " + reverseAddresses.get(0).getLocality();
-						address += ", "
-								+ reverseAddresses.get(0).getCountryName();
-						address += ", "
-								+ reverseAddresses.get(0).getAdminArea();
-					}
+					
+					pickUpItemizedOverlay.setPickUpPoint(point);
 
 					MapController mc = mapView.getController();
 					mc.animateTo(point);
@@ -101,7 +84,7 @@ public class SearchDestinationsActivity extends MapActivity {
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the options menu from XML
@@ -137,29 +120,31 @@ public class SearchDestinationsActivity extends MapActivity {
 	}
 
 	public void listOffers(View view) throws IOException {
-		String address = new String();
-		List<Address> reverseAddresses = geoCoder.getFromLocation(
-				pickUpItemizedOverlay.getPickUpPoint().getLatitudeE6() / 1E6,
-				pickUpItemizedOverlay.getPickUpPoint().getLongitudeE6() / 1E6, 1);
+		Address address;
+		List<android.location.Address> reverseAddresses = geoCoder
+				.getFromLocation(pickUpItemizedOverlay.getPickUpPoint()
+						.getLatitudeE6() / 1E6, pickUpItemizedOverlay
+						.getPickUpPoint().getLongitudeE6() / 1E6, 1);
 		if (reverseAddresses.size() > 0) {
-			address = reverseAddresses.get(0).getThoroughfare();
-			address += " " + reverseAddresses.get(0).getSubThoroughfare();
-			address += ", " + reverseAddresses.get(0).getSubLocality();
-			address += ", " + reverseAddresses.get(0).getSubAdminArea();
-			address += ", " + reverseAddresses.get(0).getPostalCode();
-			address += ", " + reverseAddresses.get(0).getLocality();
-			address += ", " + reverseAddresses.get(0).getCountryName();
-			address += ", " + reverseAddresses.get(0).getAdminArea();
-
-			AlertDialog.Builder adb = new AlertDialog.Builder(this);
-			adb.setTitle(getString(R.string.title_activity_search_destinations));
-			adb.setMessage(address);
-			adb.setPositiveButton("Close", null);
-			adb.show();
+			address = getAddressFromAndroidLocationAddress(reverseAddresses.get(0));
+		} else {
+			address = new Address(query, pickUpItemizedOverlay.getPickUpPoint());
 		}
 
-		// Intent intent = new Intent(this, TaxiOffersActivity.class);
-		// startActivity(intent);
+		 Intent intent = new Intent(this, TaxiOffersActivity.class);
+		 intent.putExtra("cmdf.tappxi.address", address);
+		 startActivity(intent);
 	}
 
+	private Address getAddressFromAndroidLocationAddress(
+			android.location.Address androidLocationAddress) {
+		return new Address( (androidLocationAddress.getThoroughfare() != null?androidLocationAddress.getThoroughfare() + " ":"")
+				+ (androidLocationAddress.getSubThoroughfare()!=null?androidLocationAddress.getSubThoroughfare() : ""),
+				androidLocationAddress.getSubLocality(),
+				androidLocationAddress.getLocality(),
+				androidLocationAddress.getAdminArea(),
+				androidLocationAddress.getPostalCode(), (new GeoPoint(
+						(int) (androidLocationAddress.getLatitude() * 1E6),
+						(int) (androidLocationAddress.getLongitude() * 1E6))));
+	}
 }

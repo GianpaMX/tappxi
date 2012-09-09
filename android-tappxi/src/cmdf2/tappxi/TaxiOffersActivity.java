@@ -6,6 +6,7 @@ import android.app.ExpandableListActivity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -27,6 +28,14 @@ public class TaxiOffersActivity extends ExpandableListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if(extras.containsKey("cmdf.tappxi.address")) {
+        	Address address = (Address)extras.get("cmdf.tappxi.address");
+        	Log.d("tappxi", address.toString());
+        }
+        
         adapter = new TaxiOffersExpandableListAdapter();
         setListAdapter(adapter);
         registerForContextMenu(getExpandableListView());
