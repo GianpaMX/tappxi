@@ -1,9 +1,15 @@
 package cmdf2.tappxi.model.bean;
 
+import java.io.Serializable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class User {
+public class User implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private String email;
@@ -60,6 +66,8 @@ public class User {
 	}
 
 	public static User fromJSONObject(JSONObject object) throws JSONException {
-		return new User(object.getInt("id"), object.getString("name"), object.getString("email"), (float) object.getDouble("balance"), object.getInt("status"));
+		return new User(object.getInt("id"), object.getString("name"),
+				object.getString("email"), (float) object.getDouble("balance"),
+				object.getInt("status"));
 	}
 }

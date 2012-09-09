@@ -2,12 +2,16 @@ package cmdf2.tappxi;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.ExpandableListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -15,19 +19,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import cmdf2.tappxi.api.Client;
 import cmdf2.tappxi.model.bean.Address;
 import cmdf2.tappxi.model.bean.Offer;
-import cmdf2.tappxi.model.bean.Stand;
-
-import com.google.android.maps.GeoPoint;
+import cmdf2.tappxi.model.bean.Trip;
 
 public class TaxiOffersActivity extends ExpandableListActivity {
-	ExpandableListAdapter adapter;
+	TaxiOffersExpandableListAdapter adapter;
 	Client client;
+
+	ProgressDialog dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,21 +53,106 @@ public class TaxiOffersActivity extends ExpandableListActivity {
 					}
 					return null;
 				}
+
+				@Override
+				protected void onPreExecute() {
+					dialog = ProgressDialog.show(TaxiOffersActivity.this,
+							getString(R.string.getting),
+							getString(R.string.getting_wait));
+				}
+
+				@Override
+				protected void onPostExecute(Void result) {
+					updateTimer.start();
+				}
 			}.execute();
+
 		}
 
 		adapter = new TaxiOffersExpandableListAdapter();
 		setListAdapter(adapter);
 		registerForContextMenu(getExpandableListView());
+		// adapter.registerDataSetObserver(observer);
 	}
 
+	private CountDownTimer updateTimer = new CountDownTimer(10 * 60 * 1000,
+			15 * 1000) {
+		@Override
+		public void onTick(long millisUntilFinished) {
+			new AsyncTask<Void, Void, List<Offer>>() {
+
+				@Override
+				protected void onPreExecute() {
+					if (dialog == null) {
+						dialog = ProgressDialog.show(TaxiOffersActivity.this,
+								getString(R.string.getting),
+								getString(R.string.getting_wait));
+					}
+				}
+
+				@Override
+				protected List<Offer> doInBackground(Void... params) {
+					try {
+						return client.offers();
+					} catch (IOException e) {
+						Log.e("tappxi", "IOException", e);
+					}
+					return null;
+				}
+
+				@Override
+				protected void onPostExecute(List<Offer> offers) {
+					adapter.refresh(offers);
+					dialog.dismiss();
+					dialog = null;
+				}
+
+			}.execute();
+		}
+
+		@Override
+		public void onFinish() {
+			AlertDialog.Builder adb = new AlertDialog.Builder(
+					TaxiOffersActivity.this);
+			adb.setTitle(getString(R.string.title_activity_taxi_offers));
+			adb.setMessage(getString(R.string.notaxis));
+			adb.setPositiveButton("Close", null);
+			adb.show();
+
+			Intent intent = new Intent(TaxiOffersActivity.this,
+					MainActivity.class);
+			startActivity(intent);
+		}
+	};
+
 	@Override
-	public boolean onChildClick(ExpandableListView parent, View v,
-			int groupPosition, int childPosition, long id) {
+	public boolean onChildClick(final ExpandableListView parent, View v,
+			final int groupPosition, int childPosition, long id) {
 
 		if (childPosition == 3) {
-			Intent intent = new Intent(this, CountdownTimerActivity.class);
-			startActivity(intent);
+			updateTimer.cancel();
+			
+			new AsyncTask<Void, Void, Trip>() {
+				@Override
+				protected Trip doInBackground(Void... params) {
+					Trip trip = null;
+					
+					Offer offer = (Offer)((TaxiOffersExpandableListAdapter)parent.getAdapter()).getGroup(groupPosition);
+					try {
+						trip = client.confirmTrip(offer);
+					} catch (IOException e) {
+						Log.e("tappxi", "IOException", e);
+					}
+					
+					return trip;
+				}
+				@Override
+				protected void onPostExecute(Trip trip) {
+					Intent intent = new Intent(TaxiOffersActivity.this, CountdownTimerActivity.class);
+//					intent.putExtra("cmdf.tappxi.trip", trip);
+					startActivity(intent);
+				}
+			};
 		}
 
 		return super.onChildClick(parent, v, groupPosition, childPosition, id);
@@ -78,14 +166,15 @@ public class TaxiOffersActivity extends ExpandableListActivity {
 
 	public class TaxiOffersExpandableListAdapter extends
 			BaseExpandableListAdapter {
-		ArrayList<Offer> offers = new ArrayList<Offer>();
+		List<Offer> offers;
+
+		public TaxiOffersExpandableListAdapter(List<Offer> newOffers) {
+			super();
+			this.offers = new ArrayList<Offer>(newOffers);
+		}
 
 		public TaxiOffersExpandableListAdapter() {
-			super();
-			offers.add(new Offer(1, 10, (float) 25.3, new Stand(1,
-					"Sitio centro", 20, 1, new Address(1,
-							"República de BVrsil", "Centro", "México", "D.F.",
-							"0300", new GeoPoint(99, 99)))));
+			this(new ArrayList<Offer>());
 		}
 
 		@Override
@@ -119,6 +208,12 @@ public class TaxiOffersActivity extends ExpandableListActivity {
 				return TaxiOffersActivity.this.getString(R.string.select);
 			}
 			return null;
+		}
+
+		public void refresh(List<Offer> newOffers) {
+			offers.clear();
+			offers.addAll(newOffers);
+			notifyDataSetChanged();
 		}
 
 		@Override

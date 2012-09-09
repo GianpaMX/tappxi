@@ -3,7 +3,6 @@ package cmdf2.tappxi.api;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -55,6 +54,7 @@ public class Client {
 		HttpResponse httpResponse = httpClient.execute(httpPost);
 				
 		String json = EntityUtils.toString(httpResponse.getEntity());
+		Log.d("tappxi", json);
 
 		try {
 			JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
@@ -88,7 +88,7 @@ public class Client {
 		}
 	}
 
-	public Collection<Offer> offers() throws IOException {
+	public List<Offer> offers() throws IOException {
 		HttpPost httpPost = new HttpPost(apiServer + "/offers");
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("token", token));
@@ -100,12 +100,14 @@ public class Client {
 
 		Log.d("tappxi", json);
 		
-		Collection<Offer> offers = new ArrayList<Offer>();
+		List<Offer> offers = new ArrayList<Offer>();
 		try {
 			JSONArray array = (JSONArray) new JSONTokener(json).nextValue();
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject object = array.getJSONObject(i);
-				offers.add(Offer.fromJSONObject(object));
+				Offer offer;
+				offers.add(offer = Offer.fromJSONObject(object));
+				Log.d("tappxi", String.valueOf(offer.getId()));
 			}
 		} catch (JSONException e) {
 			Log.e("tappxi", "JSONException", e);
