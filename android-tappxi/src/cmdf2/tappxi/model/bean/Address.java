@@ -48,6 +48,10 @@ public class Address implements Serializable {
 		this(0, street, "", "", "", "", geoPoint);
 	}
 
+	public Address() {
+		this(0, "", "", "", "", "", new GeoPoint(0, 0));
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -134,7 +138,7 @@ public class Address implements Serializable {
 	public static Address fromJSONObject(JSONObject object) throws JSONException {
 		return new Address(object.getInt("id"), object.getString("street"),
 				object.getString("settlement"), object.getString("city"),
-				object.getString("state"), object.getString("zipCode"),
+				object.getString("state"), object.getString("zip_code"),
 				new GeoPoint(object.getInt("latitude"),
 						object.getInt("longitude")));
 	}

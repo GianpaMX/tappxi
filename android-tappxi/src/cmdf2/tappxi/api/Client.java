@@ -1,6 +1,7 @@
 package cmdf2.tappxi.api;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,6 +22,8 @@ import org.json.JSONTokener;
 import android.util.Log;
 import cmdf2.tappxi.model.bean.Address;
 import cmdf2.tappxi.model.bean.Offer;
+import cmdf2.tappxi.model.bean.Request;
+import cmdf2.tappxi.model.bean.Trip;
 
 public class Client {
 	private static Client instance = null;
@@ -29,6 +32,7 @@ public class Client {
 	private HttpClient httpClient;
 
 	private String token;
+	private Request request;
 
 	protected Client() {
 		httpClient = new DefaultHttpClient();
@@ -49,11 +53,13 @@ public class Client {
 		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 		HttpResponse httpResponse = httpClient.execute(httpPost);
+				
 		String json = EntityUtils.toString(httpResponse.getEntity());
 
 		try {
 			JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
 			token = object.getString("token");
+			Log.d("tappxi", token);
 		} catch (JSONException e) {
 			Log.e("tappxi", "JSONException", e);
 		}
@@ -64,10 +70,10 @@ public class Client {
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("token", token));
 
-		nameValuePairs.addAll(address.getNameValuePairs());
-
+		nameValuePairs.addAll(address.getNameValuePairs("start_address_"));
+		
 		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
+		
 		HttpResponse httpResponse = httpClient.execute(httpPost);
 		String json = EntityUtils.toString(httpResponse.getEntity());
 
@@ -75,6 +81,8 @@ public class Client {
 
 		try {
 			JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
+			request = Request.fromJSONObject(object);
+			Log.d("tappxi", String.valueOf(request.getId()));;
 		} catch (JSONException e) {
 			Log.e("tappxi", "JSONException", e);
 		}
@@ -103,6 +111,31 @@ public class Client {
 			Log.e("tappxi", "JSONException", e);
 		}
 		return offers;
+	}
+
+	public Trip confirmTrip(Offer offer) throws IOException {
+		HttpPost httpPost = new HttpPost(apiServer + "/trip/confirm");
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("token", token));
+		
+		nameValuePairs.add(new BasicNameValuePair("id_offer", String.valueOf(offer.getId())));
+
+		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		String json = EntityUtils.toString(httpResponse.getEntity());
+
+		Log.d("tappxi", json);
+		Trip trip = null;
+		try {
+			JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
+			trip = Trip.fromJSONObject(object);
+		} catch (JSONException e) {
+			Log.e("tappxi", "JSONException", e);
+		} catch (ParseException e) {
+			Log.e("tappxi", "ParseException", e);
+		}
+		return trip;
 	}
 
 	public String getApiServer() {

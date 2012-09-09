@@ -27,7 +27,7 @@ public class MainActivity extends FragmentActivity {
         
         
         client = Client.getInstance();
-        client.setApiServer("http://172.16.128.6/tappxi/web/app_dev.php/api");
+        client.setApiServer("http://192.168.43.44/tappxi/web/app_dev.php/api");
         
         new AsyncTask<Void, Void, Void>() {
 

@@ -1,5 +1,10 @@
 package cmdf2.tappxi.model.bean;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
