@@ -185,6 +185,37 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/trip/pay", defaults={"_format"="json"})
+     * @Method({"POST"})
+     */
+    public function payTripAction(){
+        $user = $this->getUser();
+        $idTrip = $this->getRequest()->request->get('id_trip');
+        if( !$idTrip ){
+            throw $this->createNotFoundException("The trip not exists");
+        }
+        $trip = $this->getTripRepo()->find($idTrip);
+        if($trip instanceof Entity\Trip){
+            if($trip->getRequest()->getUser()->getId() != $user->getId()){
+                throw new HttpException(500, "El viaje no pertenece a este usuario");
+            }
+            $trip->setStatus(Entity\Trip::STATUS_PAYED);
+            $user->setBalance($user->getBalance() - $trip->getFare());
+            $this->getManager()->flush();
+            $movement = new Entity\Movement();
+            $movement->setAmount($trip->getFare());
+            $movement->setCreatedAt(new \DateTime());
+            $movement->setUser($user);
+            $movement->setType(Entity\Movement::TYPE_PAY);
+            $this->getManager()->persist($movement);
+            $this->getManager()->flush();
+            return new Response(json_encode(array('balance' => $user->getBalance())));
+        }else{
+            throw $this->createNotFoundException("The trip not exists");
+        }
+    }
+
+    /**
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getManager(){

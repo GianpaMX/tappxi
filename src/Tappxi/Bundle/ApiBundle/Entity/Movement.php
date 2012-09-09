@@ -169,4 +169,7 @@ class Movement
     public function toJson(){
         return json_encode($this->toArray());
     }
+
+    const TYPE_PAY = 1;
+    const TYPE_DEPOSIT = 2;
 }
