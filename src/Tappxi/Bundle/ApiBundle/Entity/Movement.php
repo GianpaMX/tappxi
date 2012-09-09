@@ -57,7 +57,7 @@ class Movement
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -73,14 +73,14 @@ class Movement
     public function setAmount($amount)
     {
         $this->amount = $amount;
-    
+
         return $this;
     }
 
     /**
      * Get amount
      *
-     * @return float 
+     * @return float
      */
     public function getAmount()
     {
@@ -96,14 +96,14 @@ class Movement
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -119,14 +119,14 @@ class Movement
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -142,17 +142,31 @@ class Movement
     public function setUser(\Tappxi\Bundle\ApiBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return Tappxi\Bundle\ApiBundle\Entity\User 
+     * @return Tappxi\Bundle\ApiBundle\Entity\User
      */
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function toArray(){
+        return array(
+            'id' => $this->getId(),
+            'amount' => $this->getAmount(),
+            'created_at' => $this->getCreatedAt(),
+            'type' => $this->getType(),
+            'user' => $this->getUser()->toArray(),
+        );
+    }
+
+    public function toJson(){
+        return json_encode($this->toArray());
     }
 }

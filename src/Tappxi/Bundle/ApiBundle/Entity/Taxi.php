@@ -57,7 +57,7 @@ class Taxi
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -73,14 +73,14 @@ class Taxi
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -96,14 +96,14 @@ class Taxi
     public function setTagNumber($tagNumber)
     {
         $this->tagNumber = $tagNumber;
-    
+
         return $this;
     }
 
     /**
      * Get tagNumber
      *
-     * @return string 
+     * @return string
      */
     public function getTagNumber()
     {
@@ -119,14 +119,14 @@ class Taxi
     public function setStatus($status)
     {
         $this->status = $status;
-    
+
         return $this;
     }
 
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -142,17 +142,31 @@ class Taxi
     public function setStand(\Tappxi\Bundle\ApiBundle\Entity\Stand $stand = null)
     {
         $this->stand = $stand;
-    
+
         return $this;
     }
 
     /**
      * Get stand
      *
-     * @return Tappxi\Bundle\ApiBundle\Entity\Stand 
+     * @return Tappxi\Bundle\ApiBundle\Entity\Stand
      */
     public function getStand()
     {
         return $this->stand;
+    }
+
+    public function toArray(){
+        return array(
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'stand' => $this->getStand(),
+            'status' => $this->getStatus(),
+            'tag_number' => $this->getTagNumber(),
+        );
+    }
+
+    public function toJson(){
+        return json_encode($this->toArray());
     }
 }

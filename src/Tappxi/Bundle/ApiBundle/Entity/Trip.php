@@ -80,7 +80,7 @@ class Trip
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -96,14 +96,14 @@ class Trip
     public function setFare($fare)
     {
         $this->fare = $fare;
-    
+
         return $this;
     }
 
     /**
      * Get fare
      *
-     * @return float 
+     * @return float
      */
     public function getFare()
     {
@@ -119,14 +119,14 @@ class Trip
     public function setStatus($status)
     {
         $this->status = $status;
-    
+
         return $this;
     }
 
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -142,14 +142,14 @@ class Trip
     public function setRequest(\Tappxi\Bundle\ApiBundle\Entity\Request $request = null)
     {
         $this->request = $request;
-    
+
         return $this;
     }
 
     /**
      * Get request
      *
-     * @return Tappxi\Bundle\ApiBundle\Entity\Request 
+     * @return Tappxi\Bundle\ApiBundle\Entity\Request
      */
     public function getRequest()
     {
@@ -165,14 +165,14 @@ class Trip
     public function setOffer(\Tappxi\Bundle\ApiBundle\Entity\Offer $offer = null)
     {
         $this->offer = $offer;
-    
+
         return $this;
     }
 
     /**
      * Get offer
      *
-     * @return Tappxi\Bundle\ApiBundle\Entity\Offer 
+     * @return Tappxi\Bundle\ApiBundle\Entity\Offer
      */
     public function getOffer()
     {
@@ -188,14 +188,14 @@ class Trip
     public function setTaxi(\Tappxi\Bundle\ApiBundle\Entity\Taxi $taxi = null)
     {
         $this->taxi = $taxi;
-    
+
         return $this;
     }
 
     /**
      * Get taxi
      *
-     * @return Tappxi\Bundle\ApiBundle\Entity\Taxi 
+     * @return Tappxi\Bundle\ApiBundle\Entity\Taxi
      */
     public function getTaxi()
     {
@@ -211,17 +211,33 @@ class Trip
     public function setMovement(\Tappxi\Bundle\ApiBundle\Entity\Movement $movement = null)
     {
         $this->movement = $movement;
-    
+
         return $this;
     }
 
     /**
      * Get movement
      *
-     * @return Tappxi\Bundle\ApiBundle\Entity\Movement 
+     * @return Tappxi\Bundle\ApiBundle\Entity\Movement
      */
     public function getMovement()
     {
         return $this->movement;
+    }
+
+    public function toArray(){
+        return array(
+            'id' => $this->getId(),
+            'fare' => $this->getFare(),
+            'offer' => $this->getOffer()->toArray(),
+            'request' => $this->getRequest()->toArray(),
+            'status' => $this->getRequest()->getStatus(),
+            'movement' => $this->getMovement() ? $this->getMovement()->toArra() : null,
+            'taxi' => $this->getTaxi() ? $this->getTaxi()->toArray(): null,
+        );
+    }
+
+    public function toJson(){
+        return json_encode($this->toArray());
     }
 }

@@ -6,8 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Tappxi\Bundle\ApiBundle\Entity;
+
 
 class DefaultController extends Controller
 {
@@ -91,6 +93,48 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/trip/confirm", defaults={"_format"="json"})
+     * @Method({"POST"})
+     */
+    public function tripConfirmAction(){
+        $user = $this->getUser();
+        $requestActive = $this->getRequestActive($user);
+        if(!$requestActive){
+            throw $this->createNotFoundException("request active not exists");
+        }
+
+        $idOffer = $this->getRequest()->request->get('id_offer');
+        if( !$idOffer ){
+            throw $this->createNotFoundException("The offer not exists");
+        }
+        $offer = $this->getOfferRepo()->find($idOffer);
+        if( !$offer ){
+            throw $this->createNotFoundException("The offer not exists");
+        }
+
+        if($offer instanceof Entity\Offer){
+            if($requestActive->getId() != $offer->getRequest()->getId()){
+                throw new HttpException(500, "La cotizacion es de una peticion pasada");
+            }
+            $tripExistent = $this->getTripRepo()->findBy(array('offer' => $offer->getId()));
+            if($tripExistent){
+                throw new HttpException(500, "Esta cotizacion ya ha sido confirmada");
+            }
+            $trip = new Entity\Trip();
+            $trip->setFare($offer->getAproximateFare());
+            $trip->setMovement(null);
+            $trip->setOffer($offer);
+            $trip->setRequest($requestActive);
+            $trip->setStatus(Entity\Request::STATUS_ON_WAY);
+            $trip->setTaxi(null);
+            $this->getManager()->persist($trip);
+            $this->getManager()->flush();
+        }
+
+        return new Response($trip->toJson());
+    }
+
+    /**
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getManager(){
@@ -119,7 +163,7 @@ class DefaultController extends Controller
             $user = $session->getUser();
         }
         if(!$user){
-            throw new \Symfony\Component\HttpKernel\Exception\HttpException(401, "token invalido");
+            throw new HttpException(401, "token invalido");
         }
         return $user;
     }

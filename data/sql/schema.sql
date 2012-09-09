@@ -177,7 +177,7 @@ CREATE  TABLE IF NOT EXISTS `tappxi`.`trip` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `request_id` INT UNSIGNED NOT NULL ,
   `offer_id` INT UNSIGNED NOT NULL ,
-  `taxi_id` INT NOT NULL ,
+  `taxi_id` INT NULL ,
   `movement_id` INT UNSIGNED NULL ,
   `fare` FLOAT NOT NULL ,
   `status` SMALLINT NOT NULL ,

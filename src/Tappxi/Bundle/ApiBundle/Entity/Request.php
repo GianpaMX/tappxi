@@ -201,5 +201,6 @@ class Request
 
     const STATUS_ACTIVE = 1;
     const STATUS_CANCELLED = 2;
+    const STATUS_ON_WAY = 3;
     //
 }
