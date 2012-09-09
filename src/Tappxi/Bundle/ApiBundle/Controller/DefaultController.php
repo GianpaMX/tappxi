@@ -68,7 +68,9 @@ class DefaultController extends Controller
         $request->setAddressStartFromArray($params);
         $request->setAddressEndFromArray($params);
         $this->getManager()->persist($request->getAddressStart());
-        $this->getManager()->persist($request->getAddressEnd());
+        if( $request->getAddressEnd() ){
+            $this->getManager()->persist($request->getAddressEnd());
+        }
         $this->getManager()->persist($request);
         $this->getManager()->flush();
         return new Response($request->toJson());

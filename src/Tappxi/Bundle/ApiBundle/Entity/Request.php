@@ -143,16 +143,18 @@ class Request
     }
 
     public function setAddressEndFromArray($array){
-        $this->setAddressEnd(Address::fromArray(array(
-            'street' => $array['end_address_street'],
-            'settlement' => $array['end_address_settlement'],
-            'city' => array_key_exists('end_address_city', $array) ? $array['end_address_city']: '',
-            'state' => array_key_exists('end_address_state', $array) ? $array['end_address_state']: '',
-            'zip_code' => $array['end_address_zip_code'],
-            'latitude' => $array['end_address_latitude'],
-            'longitude' => $array['end_address_longitude'],
-            'reference' => array_key_exists('end_address_reference', $array) ? $array['end_address_reference'] : '',
+        if(!array_key_exists('end_address_street', $array)){
+            $this->setAddressEnd(Address::fromArray(array(
+                'street' => $array['end_address_street'],
+                'settlement' => $array['end_address_settlement'],
+                'city' => array_key_exists('end_address_city', $array) ? $array['end_address_city']: '',
+                'state' => array_key_exists('end_address_state', $array) ? $array['end_address_state']: '',
+                'zip_code' => $array['end_address_zip_code'],
+                'latitude' => $array['end_address_latitude'],
+                'longitude' => $array['end_address_longitude'],
+                'reference' => array_key_exists('end_address_reference', $array) ? $array['end_address_reference'] : '',
         )));
+        }
     }
 
     /**
@@ -193,7 +195,7 @@ class Request
             'status' => $this->getStatus(),
             'user' => $this->getUser()->toArray(),
             'address_start' => $this->getAddressStart()->toArray(),
-            'address_end' => $this->getAddressEnd()->toArray(),
+            'address_end' => $this->getAddressEnd() ? $this->getAddressEnd()->toArray() : '',
         );
     }
 
