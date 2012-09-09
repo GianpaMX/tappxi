@@ -216,6 +216,59 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/request", defaults={"_format"="json"})
+     * @Method({"DELETE"})
+     */
+    public function cancelRequestAction(){
+        $user = $this->getUser();
+        $requestActive = $this->getRequestActive($user);
+        $this->cancelRequest($request);
+        $this->getManager()->flush();
+        return new Response(json_encode(array('success' => true)));
+    }
+
+    /**
+     * @Route("/trip/{id_trip}", defaults={"_format"="json"})
+     * @Method({"DELETE"})
+     */
+    public function cancelTripAction($id_trip){
+        $user = $this->getUser();
+        $trip = $this->getTripRepo()->find($id_trip);
+        if($trip instanceof Entity\Trip){
+            $trip->setStatus(Entity\Trip::STATUS_FAILED);
+            $this->getManager()->flush();
+        }else{
+            throw $this->createNotFoundException("trip not exists");
+        }
+        return new Response(json_encode(array('success' => true)));
+    }
+
+    /**
+     * @Route("/balance", defaults={"_format"="json"})
+     * @Method({"POST"})
+     */
+    public function getBalanceAction(){
+        $user = $this->getUser();
+        return new Response(json_encode(array('balance' => $user->getBalance())));
+    }
+
+    /**
+     * @Route("/logout", defaults={"_format"="json"})
+     * @Method({"POST"})
+     */
+    public function logoutAction(){
+        $user = $this->getUser();
+        $sessions = $this->getSessionRepo()->findBy(array('user' => $user->getId()));
+        array_walk($sessions, function ($session) use($em){
+            //$em->remove($session);
+        });
+        $this->getManager()->flush();
+        return new Response(json_encode(array('success' => true)));
+    }
+
+
+
+    /**
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getManager(){
