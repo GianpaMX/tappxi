@@ -21,5 +21,6 @@
     <string name="title_activity_pay">Pay</string>
     <string name="pay">Pay</string>
     <string name="wrong">Wrong</string>
+    <string name="noaddresses">No addresses</string>
 
 </resources>
