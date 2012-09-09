@@ -1,5 +1,8 @@
 package cmdf2.tappxi.model.bean;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Stand {
 	private int id;
 	private String name;
@@ -50,5 +53,9 @@ public class Stand {
 	
 	public String toString() {
 		return getName();
+	}
+
+	public static Stand fromJSONObject(JSONObject object) throws JSONException {
+		return new Stand(object.getInt("id"), object.getString("name"), (float)object.getDouble("start_fare"), object.getInt("status"), Address.fromJSONObject(object.getJSONObject("address")));
 	}
 }
