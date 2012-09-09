@@ -36,6 +36,13 @@ class Stand
     private $startFare;
 
     /**
+     * @var string $phone
+     *
+     * @ORM\Column(name="phone", type="string", nullable=true)
+     */
+    private $phone;
+
+    /**
      * @var integer $status
      *
      * @ORM\Column(name="status", type="smallint", nullable=false)
@@ -156,6 +163,14 @@ class Stand
         return $this->address;
     }
 
+    public function setPhone($phone){
+        $this->phone = $phone;
+    }
+
+    public function getPhone(){
+        return $this->phone;
+    }
+
     public function toArray(){
         return array(
             'id' => $this->getId(),
@@ -164,6 +179,7 @@ class Stand
             'start_fare' => $this->startFare,
             'status' => $this->getStatus(),
             'status_name' => $this->getStatusName(),
+            'phone' => $this->getPhone(),
         );
     }
 
