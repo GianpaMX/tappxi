@@ -38,6 +38,7 @@ function(app, Marionette, Models, Collections, text){
     	  'submit': 'onSubmit',
       },
       onSubmit: function(e){
+    	  var self = this;
     	  console.log(this.model.toJSON());
     	  var eta = this.$('#eta').val();
     	  var fare = this.$('#fare').val();
@@ -50,7 +51,7 @@ function(app, Marionette, Models, Collections, text){
     		  fare: fare,
     		  request_id: this.model.get('id')
     	  }).done(function(){
-    		  
+    		  $('a[data-target=#tab-pane-request-edit-' + self.model.get('id')+ ']').parent().find('.close').click();
     	  });
       }
     });
