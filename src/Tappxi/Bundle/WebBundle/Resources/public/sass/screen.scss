@@ -1,0 +1,41 @@
+
+@import "twitter_bootstrap";
+
+/**
+ * Closable tabs
+ */
+ul.nav-tabs {
+  li button.close {
+    display: none;
+    padding-right: 3px;
+  }
+
+  li:hover button.close {
+    display: block;
+  }
+}
+
+.scroll-left {
+  padding: 10px 5px 10px 0px;
+}
+
+.scroll-right {
+  padding: 10px 0px 10px 0px;
+}
+
+.font-large {
+  font-size: 20px;
+}
+
+body {
+  padding-top: 50px;
+}
+
+.scroll-nav-tabs {
+  overflow: hidden; 
+  width: 90%; 
+  display: inline-block;
+  ul.nav-tabs {
+    width: 7000px;
+  }
+}
