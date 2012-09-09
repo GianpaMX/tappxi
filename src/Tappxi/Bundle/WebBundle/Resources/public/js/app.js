@@ -20,9 +20,8 @@ define(['backbone',"marionette", "vendor/URI"], function(Backbone, Marionette){
   });
   
   app.rest = function(resource) {
-    return URI("http://localhost:9000")
-      .directory(sessionStorage.token)
-      .filename(resource).suffix('json')
+    return URI("http://localhost/tappxi/web/app_dev.php/api/")
+      .filename(resource)
       .search({
         't': (new Date()).getTime()
       });

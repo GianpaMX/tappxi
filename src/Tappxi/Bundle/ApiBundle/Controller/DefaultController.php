@@ -158,6 +158,18 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/stand", defaults={"_format"="json"})
+     * @Method({"GET"})
+     */
+    public function standsAction(){
+        $stands = $this->getStandRepo()->findAll();
+        $stands = array_map(function ($stand){
+            return $stand->toArray();
+        }, $stands);
+        return new Response(json_encode($stands));
+    }
+
+    /**
      * @Route("/trip/fare", defaults={"_format"="json"})
      * @Method({"PUT"})
      */

@@ -4760,3 +4760,7 @@ body {
 .scroll-nav-tabs ul.nav-tabs {
   width: 7000px;
 }
+
+.form-horizontal .control-label {
+  width: auto;
+}

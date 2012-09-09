@@ -163,10 +163,16 @@ class Stand
             'address' => $this->address->toArray(),
             'start_fare' => $this->startFare,
             'status' => $this->getStatus(),
+            'status_name' => $this->getStatusName(),
         );
     }
 
     public function toJson(){
         return json_encode($this->toArray());
     }
+
+    public function getStatusName(){
+        return $this->getStatus() == 1 ? "Activo" : "Inactivo";
+    }
+
 }

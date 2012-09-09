@@ -23,7 +23,8 @@ require([
   "vendor/spin",
   "app", 
   "main/module",
-  "user/module"
+  "user/module",
+  "stand/module",
   ], function () {
     var app = require('app');
     var MainModule = require("main/module");
