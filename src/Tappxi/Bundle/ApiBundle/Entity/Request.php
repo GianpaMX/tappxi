@@ -135,7 +135,7 @@ class Request
             'settlement' => $array['start_address_settlement'],
             'city' => array_key_exists('start_address_city', $array) ? $array['start_address_city']: '',
             'state' => array_key_exists('start_address_state', $array) ? $array['start_address_state']: '',
-            'zip_code' => $array['start_address_zip_code'],
+            'zip_code' => array_key_exists('start_address_zip_code', $array) ? $array['start_address_zip_code']: '',
             'latitude' => $array['start_address_latitude'],
             'longitude' => $array['start_address_longitude'],
             'reference' => array_key_exists('start_address_reference', $array) ? $array['start_address_reference'] : '',
@@ -143,7 +143,7 @@ class Request
     }
 
     public function setAddressEndFromArray($array){
-        if(!array_key_exists('end_address_street', $array)){
+        if(array_key_exists('end_address_street', $array)){
             $this->setAddressEnd(Address::fromArray(array(
                 'street' => $array['end_address_street'],
                 'settlement' => $array['end_address_settlement'],
@@ -194,8 +194,8 @@ class Request
             'id' => $this->getId(),
             'status' => $this->getStatus(),
             'user' => $this->getUser()->toArray(),
-            'address_start' => $this->getAddressStart()->toArray(),
-            'address_end' => $this->getAddressEnd() ? $this->getAddressEnd()->toArray() : '',
+            'start_address' => $this->getAddressStart()->toArray(),
+            'end_address' => $this->getAddressEnd() ? $this->getAddressEnd()->toArray() : '',
         );
     }
 

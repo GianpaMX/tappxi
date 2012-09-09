@@ -163,7 +163,7 @@ class Offer
         return array(
             'id' => $this->getId(),
             'eta' => $this->getEta(),
-            'aproximate_fear' => $this->getAproximateFare(),
+            'fear' => $this->getAproximateFare(),
             'request' => $this->getRequest()->toArray(),
             'stand' => $this->getStand()->toArray(),
         );

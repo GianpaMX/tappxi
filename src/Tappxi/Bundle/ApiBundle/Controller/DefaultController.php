@@ -14,7 +14,7 @@ use Tappxi\Bundle\ApiBundle\Entity;
 class DefaultController extends Controller
 {
     /**
-     * @Route("")
+     * @Route("/")
      * @Template()
      */
     public function indexAction()
@@ -360,7 +360,7 @@ class DefaultController extends Controller
             $user = $session->getUser();
         }
         if(!$user){
-            throw new HttpException(401, "token invalido");
+            throw new HttpException(401, "token invalido ".$token);
         }
         return $user;
     }
