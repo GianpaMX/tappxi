@@ -12,11 +12,19 @@
         android:apiKey="@string/map_key"
         android:clickable="true" />
 
+    <ImageView
+        android:id="@+id/drag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/marker_green_a"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/button1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/next_button" 
         android:layout_alignParentBottom="true"
-        android:onClick="listOffers"/>
+        android:onClick="listOffers"
+        android:text="@string/next_button" />
+
 </RelativeLayout>
