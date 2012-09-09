@@ -29,6 +29,13 @@ class Trip
     private $fare;
 
     /**
+     * @var boolean $arrival_taxi
+     *
+     * @ORM\Column(name="arrival_taxi", type="boolean", nullable=true)
+     */
+    private $arrival_taxi = false;
+
+    /**
      * @var integer $status
      *
      * @ORM\Column(name="status", type="smallint", nullable=false)
@@ -225,6 +232,15 @@ class Trip
         return $this->movement;
     }
 
+    public function setArrivalTaxi($boolean){
+        $this->arrival_taxi = $boolean;
+    }
+
+    public function isArrivalTaxi()
+    {
+        return (boolean) $this->arrival_taxi;
+    }
+
     public function toArray(){
         return array(
             'id' => $this->getId(),
@@ -234,6 +250,7 @@ class Trip
             'status' => $this->getRequest()->getStatus(),
             'movement' => $this->getMovement() ? $this->getMovement()->toArra() : null,
             'taxi' => $this->getTaxi() ? $this->getTaxi()->toArray(): null,
+            'arrival_taxi' => $this->isArrivalTaxi(),
         );
     }
 

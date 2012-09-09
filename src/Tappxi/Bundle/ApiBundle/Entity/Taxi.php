@@ -53,7 +53,6 @@ class Taxi
     private $stand;
 
 
-
     /**
      * Get id
      *

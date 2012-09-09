@@ -283,13 +283,45 @@ class DefaultController extends Controller
         return new Response(json_encode(array('success' => true)));
     }
 
-
+    /**
+     * @Route("/taxi/arrival", defaults={"_format"="json"})
+     * @Method({"POST"})
+     */
+    public function taxiArrivalAction(){
+        $user = $this->getUser();
+        $idTrip = $this->getRequest()->request->get('id_trip');
+        if(!$idTrip){
+            throw $this->createNotFoundException("el viaje no existe");
+        }
+        $trip = $this->getTripRepo()->find($idTrip);
+        if(!$trip){
+            throw $this->createNotFoundException("el viaje no existe");
+        }
+        $trip->setArrivalTaxi(true);
+        $this->getManager()->flush();
+        return new Response($trip->toJson());
+    }
 
     /**
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getManager(){
         return $this->getDoctrine()->getManager();
+    }
+
+    /**
+     *
+     * @throws HttpException
+     * @return Entity\Trip
+     */
+    public function getTripActive(){
+        $user = $this->getUser();
+        $requestActive = $this->getRequestActive($user);
+        $trip = $this->getTripRepo()->findOneBy(array('request' => $requestActive->getId()));
+        if(!$trip){
+            throw new HttpException(500, "No existe un viaje activo");
+        }
+        return $trip;
     }
 
     /**

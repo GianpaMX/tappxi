@@ -50,6 +50,7 @@ CREATE  TABLE IF NOT EXISTS `tappxi`.`address` (
   `zip_code` VARCHAR(5) NOT NULL ,
   `latitude` FLOAT NOT NULL ,
   `longitude` FLOAT NOT NULL ,
+  `reference` TEXT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -181,6 +182,7 @@ CREATE  TABLE IF NOT EXISTS `tappxi`.`trip` (
   `movement_id` INT UNSIGNED NULL ,
   `fare` FLOAT NOT NULL ,
   `status` SMALLINT NOT NULL ,
+  `taxi_arrival` TINYINT(1) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_trip_request1` (`request_id` ASC) ,
   INDEX `fk_trip_offers1` (`offer_id` ASC) ,
