@@ -9,3 +9,4 @@ build/
 vendor
 bin
 composer.phar
+src/Tappxi/Bundle/WebBundle/Resources/public/.sass-cache/
