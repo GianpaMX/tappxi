@@ -245,4 +245,5 @@ class Trip
     const STATUS_UNCONFIRMED = 2;
     const STATUS_PAYED = 3;
     const STATUS_FAILED = 4;
+    const STATUS_IS_WRONG = 5;
 }

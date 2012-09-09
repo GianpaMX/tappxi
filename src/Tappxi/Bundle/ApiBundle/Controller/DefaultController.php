@@ -266,6 +266,23 @@ class DefaultController extends Controller
         return new Response(json_encode(array('success' => true)));
     }
 
+    /**
+     * @Route("/trip/not-authorized", defaults={"_format"="json"})
+     * @Method({"PUT"})
+     */
+    public function tripNotAuthorizedAction(){
+        $id_trip = $this->getRequest()->request->get('id_trip');
+        $user = $this->getUser();
+        $trip = $this->getTripRepo()->find($id_trip);
+        if($trip instanceof Entity\Trip){
+            $trip->setStatus(Entity\Trip::STATUS_IS_WRONG);
+            $this->getManager()->flush();
+        }else{
+            throw $this->createNotFoundException("trip not exists");
+        }
+        return new Response(json_encode(array('success' => true)));
+    }
+
 
 
     /**
