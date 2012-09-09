@@ -138,6 +138,7 @@ class Request
             'zip_code' => $array['start_address_zip_code'],
             'latitude' => $array['start_address_latitude'],
             'longitude' => $array['start_address_longitude'],
+            'reference' => array_key_exists('start_address_reference', $array) ? $array['start_address_reference'] : '',
         )));
     }
 
@@ -150,6 +151,7 @@ class Request
             'zip_code' => $array['end_address_zip_code'],
             'latitude' => $array['end_address_latitude'],
             'longitude' => $array['end_address_longitude'],
+            'reference' => array_key_exists('end_address_reference', $array) ? $array['end_address_reference'] : '',
         )));
     }
 

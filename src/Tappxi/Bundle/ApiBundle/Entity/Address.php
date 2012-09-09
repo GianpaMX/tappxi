@@ -70,6 +70,12 @@ class Address
      */
     private $longitude;
 
+    /**
+     * @var string $reference
+     *
+     * @ORM\Column(name="reference", type="string", nullable=true)
+     */
+    private $reference;
 
 
     /**
@@ -243,6 +249,14 @@ class Address
         return $this->longitude;
     }
 
+    public function setReference($ref){
+        $this->reference = $ref;
+    }
+
+    public function getReference(){
+        return $this->reference;
+    }
+
     public function toArray(){
         return array(
             'id' => $this->getId(),
@@ -253,6 +267,7 @@ class Address
             'zip_code' => $this->getZipCode(),
             'latitude' => $this->getLatitude(),
             'longitude' => $this->getLongitude(),
+            'reference' => $this->getReference(),
         );
     }
 
@@ -265,6 +280,7 @@ class Address
         $address->setZipCode($array['zip_code']);
         $address->setLatitude($array['latitude']);
         $address->setLongitude($array['longitude']);
+        $address->setReference( array_key_exists('reference', $array) ? $array['reference'] : '');
         return $address;
     }
 

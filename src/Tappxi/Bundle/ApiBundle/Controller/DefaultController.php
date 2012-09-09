@@ -156,6 +156,35 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/trip/fare", defaults={"_format"="json"})
+     * @Method({"PUT"})
+     */
+    public function updateTripFareAction(){
+        $user = $this->getUser();
+        $idTrip = $this->getRequest()->request->get('id_trip');
+        $fare = $this->getRequest()->request->get('fare');
+        if( !$idTrip ){
+            throw $this->createNotFoundException("The trip not exists");
+        }
+        if(!$fare){
+            throw new HttpException(500, "El costo no puede ser cero o vacio");
+        }
+        $trip = $this->getTripRepo()->find($idTrip);
+        if($trip instanceof Entity\Trip){
+            if($trip->getRequest()->getUser()->getId() != $user->getId()){
+                throw new HttpException(500, "El viaje no pertenece a este usuario");
+            }
+            $trip->setFare($fare);
+            $trip->setStatus(Entity\Trip::STATUS_UNCONFIRMED);
+            $this->getManager()->persist($trip);
+            $this->getManager()->flush();
+            return new Response($trip->toJson());
+        }else{
+            throw $this->createNotFoundException("The trip not exists");
+        }
+    }
+
+    /**
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getManager(){

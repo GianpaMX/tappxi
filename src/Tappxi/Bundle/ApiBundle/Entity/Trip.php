@@ -242,4 +242,5 @@ class Trip
     }
 
     const STATUS_ON_WAY = 1;
+    const STATUS_UNCONFIRMED = 2;
 }
