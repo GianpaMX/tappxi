@@ -36,7 +36,7 @@ class DefaultController extends Controller
 
             $sessions = $this->getSessionRepo()->findBy(array('user' => $user->getId()));
             array_walk($sessions, function ($session) use($em){
-                $em->remove($session);
+                //$em->remove($session);
             });
 
             $session = new Entity\Session();
@@ -121,17 +121,38 @@ class DefaultController extends Controller
                 throw new HttpException(500, "Esta cotizacion ya ha sido confirmada");
             }
             $trip = new Entity\Trip();
-            $trip->setFare($offer->getAproximateFare());
+            $trip->setFare(0);
             $trip->setMovement(null);
             $trip->setOffer($offer);
             $trip->setRequest($requestActive);
-            $trip->setStatus(Entity\Request::STATUS_ON_WAY);
+            $trip->setStatus(Entity\Trip::STATUS_ON_WAY);
             $trip->setTaxi(null);
             $this->getManager()->persist($trip);
             $this->getManager()->flush();
         }
 
         return new Response($trip->toJson());
+    }
+
+    /**
+     * @Route("/trip/fare", defaults={"_format"="json"})
+     * @Method({"POST"})
+     */
+    public function tripFareAction(){
+        $user = $this->getUser();
+        $idTrip = $this->getRequest()->request->get('id_trip');
+        if( !$idTrip ){
+            throw $this->createNotFoundException("The trip not exists");
+        }
+        $trip = $this->getTripRepo()->find($idTrip);
+        if($trip instanceof Entity\Trip){
+            if($trip->getRequest()->getUser()->getId() != $user->getId()){
+                throw new HttpException(500, "El viaje no pertenece a este usuario");
+            }
+            return new Response(json_encode(array('fare' => $trip->getFare())));
+        }else{
+            throw $this->createNotFoundException("The trip not exists");
+        }
     }
 
     /**

@@ -240,4 +240,6 @@ class Trip
     public function toJson(){
         return json_encode($this->toArray());
     }
+
+    const STATUS_ON_WAY = 1;
 }
