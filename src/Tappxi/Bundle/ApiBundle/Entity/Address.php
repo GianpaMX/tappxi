@@ -57,18 +57,18 @@ class Address
     private $zipCode;
 
     /**
-     * @var float $lat
+     * @var float $latitude
      *
-     * @ORM\Column(name="lat", type="float", nullable=false)
+     * @ORM\Column(name="latitude", type="float", nullable=false)
      */
-    private $lat;
+    private $latitude;
 
     /**
-     * @var float $long
+     * @var float $longitude
      *
-     * @ORM\Column(name="long", type="float", nullable=false)
+     * @ORM\Column(name="longitude", type="float", nullable=false)
      */
-    private $long;
+    private $longitude;
 
 
 
@@ -198,49 +198,49 @@ class Address
     }
 
     /**
-     * Set lat
+     * Set latitude
      *
-     * @param float $lat
+     * @param float $latitude
      * @return Address
      */
-    public function setLat($lat)
+    public function setLatitude($latitude)
     {
-        $this->lat = $lat;
+        $this->latitude = $latitude;
 
         return $this;
     }
 
     /**
-     * Get lat
+     * Get latitude
      *
      * @return float
      */
-    public function getLat()
+    public function getLatitude()
     {
-        return $this->lat;
+        return $this->latitude;
     }
 
     /**
-     * Set long
+     * Set longitude
      *
-     * @param float $long
+     * @param float $longitude
      * @return Address
      */
-    public function setLong($long)
+    public function setLongitude($longitude)
     {
-        $this->long = $long;
+        $this->longitude = $longitude;
 
         return $this;
     }
 
     /**
-     * Get long
+     * Get longitude
      *
      * @return float
      */
-    public function getLong()
+    public function getLongitude()
     {
-        return $this->long;
+        return $this->longitude;
     }
 
     public function toArray(){
@@ -251,8 +251,8 @@ class Address
             'city' => $this->getCity(),
             'state' => $this->getState(),
             'zip_code' => $this->getZipCode(),
-            'lat' => $this->getLat(),
-            'long' => $this->getLong(),
+            'latitude' => $this->getLatitude(),
+            'longitude' => $this->getLongitude(),
         );
     }
 
@@ -263,8 +263,8 @@ class Address
         $address->setCity($array['city']);
         $address->setState($array['state']);
         $address->setZipCode($array['zip_code']);
-        $address->setLat($array['lat']);
-        $address->setLong($array['long']);
+        $address->setLatitude($array['latitude']);
+        $address->setLongitude($array['longitude']);
         return $address;
     }
 

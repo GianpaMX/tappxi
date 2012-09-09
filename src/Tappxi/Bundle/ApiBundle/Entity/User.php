@@ -197,4 +197,6 @@ class User
     public function toJson(){
         return json_encode($this->toArray());
     }
+
+
 }

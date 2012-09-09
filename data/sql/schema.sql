@@ -48,8 +48,8 @@ CREATE  TABLE IF NOT EXISTS `tappxi`.`address` (
   `city` VARCHAR(90) NOT NULL ,
   `state` VARCHAR(45) NOT NULL ,
   `zip_code` VARCHAR(5) NOT NULL ,
-  `lat` FLOAT NOT NULL ,
-  `long` FLOAT NOT NULL ,
+  `latitude` FLOAT NOT NULL ,
+  `longitude` FLOAT NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 

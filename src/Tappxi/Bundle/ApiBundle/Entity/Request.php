@@ -133,11 +133,11 @@ class Request
         $this->setAddressStart(Address::fromArray(array(
             'street' => $array['start_address_street'],
             'settlement' => $array['start_address_settlement'],
-            'city' => $array['start_address_city'],
-            'state' => $array['start_address_state'],
+            'city' => array_key_exists('start_address_city', $array) ? $array['start_address_city']: '',
+            'state' => array_key_exists('start_address_state', $array) ? $array['start_address_state']: '',
             'zip_code' => $array['start_address_zip_code'],
-            'lat' => $array['start_address_lat'],
-            'long' => $array['start_address_long'],
+            'latitude' => $array['start_address_latitude'],
+            'longitude' => $array['start_address_longitude'],
         )));
     }
 
@@ -145,11 +145,11 @@ class Request
         $this->setAddressEnd(Address::fromArray(array(
             'street' => $array['end_address_street'],
             'settlement' => $array['end_address_settlement'],
-            'city' => $array['end_address_city'],
-            'state' => $array['end_address_state'],
+            'city' => array_key_exists('end_address_city', $array) ? $array['end_address_city']: '',
+            'state' => array_key_exists('end_address_state', $array) ? $array['end_address_state']: '',
             'zip_code' => $array['end_address_zip_code'],
-            'lat' => $array['end_address_lat'],
-            'long' => $array['end_address_long'],
+            'latitude' => $array['end_address_latitude'],
+            'longitude' => $array['end_address_longitude'],
         )));
     }
 
@@ -198,4 +198,8 @@ class Request
     public function toJson(){
         return json_encode($this->toArray());
     }
+
+    const STATUS_ACTIVE = 1;
+    const STATUS_CANCELLED = 2;
+    //
 }

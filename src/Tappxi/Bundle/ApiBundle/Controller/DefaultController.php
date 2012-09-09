@@ -55,25 +55,39 @@ class DefaultController extends Controller
      */
     public function newTaxiRequestAction(){
         $user = $this->getUser();
+        $requestActive = $this->getRequestActive($user);
+        if($requestActive){
+            $this->cancelRequest($requestActive);
+        }
         $request = new Entity\Request();
         $params = $this->getRequest()->request->all();
         $request->setUser($user);
+        $request->setStatus(Entity\Request::STATUS_ACTIVE);
         $request->setAddressStartFromArray($params);
         $request->setAddressEndFromArray($params);
+        $this->getManager()->persist($request->getAddressStart());
+        $this->getManager()->persist($request->getAddressEnd());
         $this->getManager()->persist($request);
+        $this->getManager()->flush();
         return new Response($request->toJson());
     }
 
     /**
      * @Route("/offers", defaults={"_format"="json"})
-     * @Method({"GET"})
+     * @Method({"POST"})
      */
     public function getOffersAction(){
-        $offers = $this->getOfferRepo()->findAll();
-        $map = array('offers' => array_map(function($offer){
-            return $offer->toArray();
-        }, $offers));
-        return new Response(json_encode($map));
+        $list = array();
+        $user = $this->getUser();
+        $requestActive = $this->getRequestActive($user);
+        if($requestActive){
+            $offers = $this->getOfferRepo()->findBy(array('request'=> $requestActive->getId()));
+            $list = array_map(function($offer){
+                return $offer->toArray();
+            }, $offers);
+        }
+
+        return new Response(json_encode($list));
     }
 
     /**
@@ -108,6 +122,10 @@ class DefaultController extends Controller
             throw new \Symfony\Component\HttpKernel\Exception\HttpException(401, "token invalido");
         }
         return $user;
+    }
+
+    private function cancelRequest(Entity\Request $request){
+        $request->setStatus(Entity\Request::STATUS_CANCELLED);
     }
 
     /**
@@ -183,7 +201,16 @@ class DefaultController extends Controller
         return $this->getDoctrine()->getRepository('TappxiApiBundle:Trip');
     }
 
-
-
+    /**
+     *
+     * @param Entity\User $user
+     * @return Entity\Request
+     */
+    private function getRequestActive(Entity\User $user){
+        return $this->getRequestRepo()->findOneBy(array(
+            'user' => $user->getId(),
+            'status' => Entity\Request::STATUS_ACTIVE,
+        ));
+    }
 
 }
