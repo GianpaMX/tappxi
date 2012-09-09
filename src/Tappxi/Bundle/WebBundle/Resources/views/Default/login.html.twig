@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="{{ asset('bundles/tappxiweb/js/vendor/zepto.js') }}"></script>
+    <script type="text/javascript">
+      Zepto(function($){
+
+        $("#loginForm").submit(function(e){
+          e.preventDefault();
+          e.stopPropagation();
+
+          $.ajax({
+            'type': "POST",
+            'url' : 'http://localhost/tappxi/web/app_dev.php/login',
+            'data': {
+              'username': $("#username").val(),
+              'password': $("#password").val()
+            },
+            success: function(obj){
+                var json = JSON.parse(obj);
+                console.log(json);
+                if( json && json.token ){
+                  sessionStorage.token = json.token;
+                  window.location = "http://localhost/tappxi/web/app_dev.php/";
+                }
+            }
+          });
+
+        });
+
+      });
+      </script>
+  </head>
+  <body>
+    <form id="loginForm">
+      <input type="text" name="username" id="username" required="required" />
+      <input type="submit" value="login" />
+    </form>
+  </body>
+</html>

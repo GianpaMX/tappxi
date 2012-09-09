@@ -1,0 +1,78 @@
+<!-- Start Template -->
+<script type="text/html" id="request-list-template">
+
+<h2>Sitios de Taxis</h2>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Razon Social</th>
+      <th>Banderazo</th>
+      <th>Status</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for request in requests %}
+    <tr>
+      <td>{{request.id}}</td>
+      <td>{{request.name}}</td>
+      <td>{{request.start_fare}}</td>
+      <td>{{request.status_name}}</td>
+      <td>
+        <a href="#request/edit/{{request.id}}" data-model-id="{{request.id}}" class="btn edit-request"><i class="icon-pencil"></i></a>
+        <a href="#request/delete/{{request.id}}" data-model-id="{{request.id}}" class="btn show-request"><i class="icon-trash"></i></a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+</script>
+
+<!-- Start Template -->
+<script type="text/html" id="request-edit-template">
+
+<form class="form-horizontal">
+  <fieldset>
+
+  <div class="control-group">
+    <label class="control-label" for="input01">Razon Social</label>
+    <div class="controls">
+      <input id="input01" type="text" value="{{name}}">
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="input01">Banderazo</label>
+    <div class="controls">
+      <input id="input01" type="text" value="{{start_fare}}">
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="input01">Contacto</label>
+    <div class="controls">
+      <input type="text" name="phone" value="{{ phone }}">
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="input01">Status</label>
+    <div class="controls">
+      Activo: <input type="radio" name="status" {%if status %}checked="checked"{% endif %}>
+      Inactivo: <input type="radio" name="status" {%if status %}{%else%}checked="checked"{% endif %}>
+    </div>
+  </div>
+
+  <div class="control-actions">
+    <div class="controls">
+      <button type="button" class="btn btn-primary">Guardar</button>
+    </div>
+  </div>
+
+  </fieldset>
+</form>
+
+</script>

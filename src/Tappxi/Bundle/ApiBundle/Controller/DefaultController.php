@@ -77,6 +77,17 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/requests", defaults={"_format"="json"})
+     * @Method({"GET"})
+     */
+    public function getRequestsAction(){
+        $list = array();
+        $this->getRequestRepo()->findBy(array('status'=>Entity\Request::STATUS_ACTIVE));
+
+        return new Response(json_encode($list));
+    }
+
+    /**
      * @Route("/offers", defaults={"_format"="json"})
      * @Method({"POST"})
      */

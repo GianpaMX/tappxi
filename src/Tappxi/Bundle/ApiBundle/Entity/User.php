@@ -56,6 +56,15 @@ class User
      */
     private $role;
 
+    /**
+     * @var Stand
+     *
+     * @ORM\ManyToOne(targetEntity="Stand")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="stand_id", referencedColumnName="id")
+     * })
+     */
+    private $stand;
 
 
     /**
@@ -183,6 +192,29 @@ class User
         return $this->role;
     }
 
+    /**
+     * Set stand
+     *
+     * @param Tappxi\Bundle\ApiBundle\Entity\Stand $stand
+     * @return Taxi
+     */
+    public function setStand(\Tappxi\Bundle\ApiBundle\Entity\Stand $stand = null)
+    {
+        $this->stand = $stand;
+
+        return $this;
+    }
+
+    /**
+     * Get stand
+     *
+     * @return Tappxi\Bundle\ApiBundle\Entity\Stand
+     */
+    public function getStand()
+    {
+        return $this->stand;
+    }
+
     public function toArray(){
         return array(
             'id' => $this->getId(),
@@ -191,6 +223,7 @@ class User
             'status' => $this->getStatus(),
             'email' => $this->getEmail(),
             'balance' => $this->getBalance(),
+            'stand' => $this->getStand() ? $this->getStand()->toArray() : null,
         );
     }
 
