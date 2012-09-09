@@ -32,6 +32,7 @@ public class Client {
 
 	private String token;
 	private Request request;
+	private Trip trip;
 
 	protected Client() {
 		httpClient = new DefaultHttpClient();
@@ -44,7 +45,7 @@ public class Client {
 		return instance;
 	}
 
-	public void login(String fbToken) throws IOException {
+	public Boolean login(String fbToken) throws IOException {
 		HttpPost httpPost = new HttpPost(apiServer + "/login");
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("fb_token", fbToken));
@@ -56,13 +57,17 @@ public class Client {
 		String json = EntityUtils.toString(httpResponse.getEntity());
 		Log.d("tappxi", json);
 
+		Boolean result;
 		try {
 			JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
 			token = object.getString("token");
 			Log.d("tappxi", token);
+			result = true;
 		} catch (JSONException e) {
 			Log.e("tappxi", "JSONException", e);
+			result = false;
 		}
+		return result;
 	}
 
 	public void taxiRequest(Address address) throws IOException {
@@ -128,7 +133,6 @@ public class Client {
 		String json = EntityUtils.toString(httpResponse.getEntity());
 
 		Log.d("tappxi", json);
-		Trip trip = null;
 		try {
 			JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
 			trip = Trip.fromJSONObject(object);
@@ -148,4 +152,15 @@ public class Client {
 		this.apiServer = apiServer;
 	}
 
+	public String getToken() {
+		return token;
+	}
+
+	public Request getRequest() {
+		return request;
+	}
+	
+	public Trip getTrip() {
+		return trip;
+	}
 }

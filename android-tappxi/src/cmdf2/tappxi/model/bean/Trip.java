@@ -1,16 +1,11 @@
 package cmdf2.tappxi.model.bean;
 
-import java.io.Serializable;
 import java.text.ParseException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Trip implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Trip {
 	private int id;
 	private Movement movement;
 	private Request request;

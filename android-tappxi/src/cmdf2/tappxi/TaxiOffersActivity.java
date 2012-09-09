@@ -148,8 +148,18 @@ public class TaxiOffersActivity extends ExpandableListActivity {
 				}
 				@Override
 				protected void onPostExecute(Trip trip) {
-					Intent intent = new Intent(TaxiOffersActivity.this, CountdownTimerActivity.class);
-//					intent.putExtra("cmdf.tappxi.trip", trip);
+					Intent intent;
+					if(trip != null) {
+						intent = new Intent(TaxiOffersActivity.this, CountdownTimerActivity.class);
+					} else {
+						AlertDialog.Builder adb = new AlertDialog.Builder(
+								TaxiOffersActivity.this);
+						adb.setTitle(getString(R.string.title_activity_taxi_offers));
+						adb.setMessage(getString(R.string.error_selecting_trip));
+						adb.setPositiveButton("Close", null);
+						adb.show();
+						intent = new Intent(TaxiOffersActivity.this, MainActivity.class);
+					}
 					startActivity(intent);
 				}
 			};

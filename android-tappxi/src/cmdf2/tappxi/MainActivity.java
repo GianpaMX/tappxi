@@ -2,6 +2,7 @@ package cmdf2.tappxi;
 
 import java.io.IOException;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,10 +12,7 @@ import android.view.Menu;
 import android.view.View;
 import cmdf2.tappxi.api.Client;
 
-import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
-import com.facebook.android.Facebook.DialogListener;
-import com.facebook.android.FacebookError;
 
 public class MainActivity extends FragmentActivity {
 	Facebook facebook;
@@ -29,17 +27,28 @@ public class MainActivity extends FragmentActivity {
         client = Client.getInstance();
         client.setApiServer("http://192.168.43.44/tappxi/web/app_dev.php/api");
         
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTask<Void, Void, Boolean>() {
 
 			@Override
-			protected Void doInBackground(Void... params) {
+			protected Boolean doInBackground(Void... params) {
             	try {
-					client.login("dummy");
+					return client.login("dummy");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					Log.e("tappxi", "IOException", e);
+					return false;
 				}
-				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Boolean result) {
+				if(!result) {
+					AlertDialog.Builder adb = new AlertDialog.Builder(
+							MainActivity.this);
+					adb.setTitle(getString(R.string.title_activity_main));
+					adb.setMessage(getString(R.string.error_connecting_to_server));
+					adb.setPositiveButton("Close", null);
+					adb.show();					
+				}
 			}
         	
         }.execute();

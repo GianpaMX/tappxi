@@ -25,9 +25,11 @@ public class Address implements Serializable {
 	private String zipCode;
 	private int latitude;
 	private int longitude;
+	
+	private String reference;
 
 	public Address(int id, String street, String settlement, String city,
-			String state, String zipCode, GeoPoint geoPoint) {
+			String state, String zipCode, GeoPoint geoPoint, String reference) {
 		super();
 		this.id = id;
 		this.street = street;
@@ -37,19 +39,20 @@ public class Address implements Serializable {
 		this.zipCode = zipCode;
 		this.latitude = geoPoint.getLatitudeE6();
 		this.longitude = geoPoint.getLongitudeE6();
+		this.reference = reference;
 	}
 
 	public Address(String street, String settlement, String city, String state,
-			String zipCode, GeoPoint geoPoint) {
-		this(0, street, settlement, city, state, zipCode, geoPoint);
+			String zipCode, GeoPoint geoPoint, String reference) {
+		this(0, street, settlement, city, state, zipCode, geoPoint, reference);
 	}
 
-	public Address(String street, GeoPoint geoPoint) {
-		this(0, street, "", "", "", "", geoPoint);
+	public Address(String street, GeoPoint geoPoint, String reference) {
+		this(0, street, "", "", "", "", geoPoint, reference);
 	}
 
 	public Address() {
-		this(0, "", "", "", "", "", new GeoPoint(0, 0));
+		this(0, "", "", "", "", "", new GeoPoint(0, 0), "");
 	}
 
 	public int getId() {
@@ -127,6 +130,7 @@ public class Address implements Serializable {
 				.valueOf(latitude)));
 		collection.add(new BasicNameValuePair(prefix + "longitude", String
 				.valueOf(longitude)));
+		collection.add(new BasicNameValuePair(prefix + "reference", getReference()));
 
 		return collection;
 	}
@@ -135,12 +139,20 @@ public class Address implements Serializable {
 		return getNameValuePairs("");
 	}
 
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
 	public static Address fromJSONObject(JSONObject object) throws JSONException {
 		return new Address(object.getInt("id"), object.getString("street"),
 				object.getString("settlement"), object.getString("city"),
 				object.getString("state"), object.getString("zip_code"),
 				new GeoPoint(object.getInt("latitude"),
-						object.getInt("longitude")));
+						object.getInt("longitude")), object.getString("reference"));
 	}
 
 }

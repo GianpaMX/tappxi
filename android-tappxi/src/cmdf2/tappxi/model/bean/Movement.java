@@ -1,6 +1,5 @@
 package cmdf2.tappxi.model.bean;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,11 +7,7 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Movement implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Movement {
 	private int id;
 	private User user;
 	private Date datetime;

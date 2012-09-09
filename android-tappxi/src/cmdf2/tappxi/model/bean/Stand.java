@@ -9,15 +9,17 @@ public class Stand {
 	private float startFare;
 	private int status;
 	private Address address;
+	private String phone;
 	
 	public Stand(int id, String name, float startFare, int status,
-			Address address) {
+			Address address, String phone) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.startFare = startFare;
 		this.status = status;
 		this.address = address;
+		this.phone = phone;
 	}
 	
 	public int getId() {
@@ -51,11 +53,19 @@ public class Stand {
 		this.address = address;
 	}
 	
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public String toString() {
 		return getName();
 	}
 
 	public static Stand fromJSONObject(JSONObject object) throws JSONException {
-		return new Stand(object.getInt("id"), object.getString("name"), (float)object.getDouble("start_fare"), object.getInt("status"), Address.fromJSONObject(object.getJSONObject("address")));
+		return new Stand(object.getInt("id"), object.getString("name"), (float)object.getDouble("start_fare"), object.getInt("status"), Address.fromJSONObject(object.getJSONObject("address")), object.getString("phone"));
 	}
 }

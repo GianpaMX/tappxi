@@ -126,9 +126,9 @@ public class SearchDestinationsActivity extends MapActivity {
 						.getLatitudeE6() / 1E6, pickUpItemizedOverlay
 						.getPickUpPoint().getLongitudeE6() / 1E6, 1);
 		if (reverseAddresses.size() > 0) {
-			address = getAddressFromAndroidLocationAddress(reverseAddresses.get(0));
+			address = getAddressFromAndroidLocationAddress(reverseAddresses.get(0), query);
 		} else {
-			address = new Address(query, pickUpItemizedOverlay.getPickUpPoint());
+			address = new Address(query, pickUpItemizedOverlay.getPickUpPoint(), query);
 		}
 
 		 Intent intent = new Intent(this, TaxiOffersActivity.class);
@@ -137,7 +137,7 @@ public class SearchDestinationsActivity extends MapActivity {
 	}
 
 	private Address getAddressFromAndroidLocationAddress(
-			android.location.Address androidLocationAddress) {
+			android.location.Address androidLocationAddress, String reference) {
 		return new Address( (androidLocationAddress.getThoroughfare() != null?androidLocationAddress.getThoroughfare() + " ":"")
 				+ (androidLocationAddress.getSubThoroughfare()!=null?androidLocationAddress.getSubThoroughfare() : ""),
 				androidLocationAddress.getSubLocality(),
@@ -145,6 +145,6 @@ public class SearchDestinationsActivity extends MapActivity {
 				androidLocationAddress.getAdminArea(),
 				androidLocationAddress.getPostalCode(), (new GeoPoint(
 						(int) (androidLocationAddress.getLatitude() * 1E6),
-						(int) (androidLocationAddress.getLongitude() * 1E6))));
+						(int) (androidLocationAddress.getLongitude() * 1E6))), reference);
 	}
 }
