@@ -130,6 +130,7 @@ class Session
         return array(
             'fb_token' => $this->getFbToken(),
             'token' => $this->getToken(),
+            'user' => $this->getUser()->toArray(),
         );
     }
 

@@ -23,6 +23,7 @@
                 console.log(json);
                 if( json && json.token ){
                   sessionStorage.token = json.token;
+                  sessionStorage.stand = json.user.stand.name;
                   window.location = "http://localhost/tappxi/web/app_dev.php";
                 }
             }

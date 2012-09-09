@@ -16,6 +16,8 @@ define(['backbone',"marionette", "vendor/URI"], function(Backbone, Marionette){
     if( Backbone.history ){
       console.log("history start");
       Backbone.history.start();
+      
+      $('#stand_name').text(sessionStorage.stand);
     }
   });
   
