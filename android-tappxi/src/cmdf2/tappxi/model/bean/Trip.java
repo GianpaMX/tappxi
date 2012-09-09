@@ -27,7 +27,7 @@ public class Trip {
 	}
 	
 	public static Trip fromJSONObject(JSONObject object) throws JSONException, ParseException {
-		return new Trip(object.getInt("id"), Movement.fromJSONObject(object.getJSONObject("movement")), Request.fromJSONObject(object.getJSONObject("request")), Offer.fromJSONObject(object.getJSONObject("offer")), (float)object.getDouble("offer"), object.getInt("status"), Taxi.fromJSONObject(object.getJSONObject("taxi")));
+		return new Trip(object.getInt("id"), Movement.fromJSONObject(null), Request.fromJSONObject(object.getJSONObject("request")), Offer.fromJSONObject(object.getJSONObject("offer")), (float)object.getDouble("offer"), object.getInt("status"), Taxi.fromJSONObject(object.getJSONObject("taxi")));
 	}
 
 	public int getId() {

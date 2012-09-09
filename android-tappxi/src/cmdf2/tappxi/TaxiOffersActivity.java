@@ -1,5 +1,6 @@
 package cmdf2.tappxi;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,8 +129,13 @@ public class TaxiOffersActivity extends ExpandableListActivity {
 	@Override
 	public boolean onChildClick(final ExpandableListView parent, View v,
 			final int groupPosition, int childPosition, long id) {
-
-		if (childPosition == 3) {
+		
+		if (childPosition == 2) {
+			Intent intent = new Intent(TaxiOffersActivity.this, StandActivity.class);
+			Offer offer = (Offer)(adapter.getGroup(groupPosition));
+			intent.putExtra("cmdf2.tappxi.stand", offer.getStand());
+			startActivity(intent);
+		} else if (childPosition == 3) {
 			updateTimer.cancel();
 			
 			new AsyncTask<Void, Void, Trip>() {
@@ -137,7 +143,7 @@ public class TaxiOffersActivity extends ExpandableListActivity {
 				protected Trip doInBackground(Void... params) {
 					Trip trip = null;
 					
-					Offer offer = (Offer)((TaxiOffersExpandableListAdapter)parent.getAdapter()).getGroup(groupPosition);
+					Offer offer = (Offer)((TaxiOffersExpandableListAdapter)adapter).getGroup(groupPosition);
 					try {
 						trip = client.confirmTrip(offer);
 					} catch (IOException e) {
@@ -162,7 +168,7 @@ public class TaxiOffersActivity extends ExpandableListActivity {
 					}
 					startActivity(intent);
 				}
-			};
+			}.execute();
 		}
 
 		return super.onChildClick(parent, v, groupPosition, childPosition, id);

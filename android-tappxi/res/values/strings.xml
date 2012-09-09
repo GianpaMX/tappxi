@@ -28,4 +28,10 @@
     <string name="error_selecting_trip">Error selecting trip</string>
     <string name="taxi_should_be_here">Taxi should be here</string>
     <string name="error_connecting_to_server">Error connecting to the server</string>
+    <string name="title_activity_stand">Taxi Stand</string>
+    <string name="taxi_stand">Taxi Stand</string>
+    <string name="address">Address</string>
+    <string name="phone">Phone</string>
+    <string name="call">Call</string>
+
 </resources>

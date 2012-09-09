@@ -1,9 +1,15 @@
 package cmdf2.tappxi.model.bean;
 
+import java.io.Serializable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Stand {
+public class Stand implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private float startFare;

@@ -64,7 +64,8 @@ public class Movement {
 	}
 
 	public static Movement fromJSONObject(JSONObject object) throws JSONException, ParseException {
-		return new Movement(object.getInt("id"), User.fromJSONObject(object.getJSONObject("user")), new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("datetime")), (float)object.getDouble("amount"), object.getInt("type"));
+		return new Movement(0, new User(0, "", "", 0, 1), new Date(), 0, 1);
+//		return new Movement(object.getInt("id"), User.fromJSONObject(object.getJSONObject("user")), new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("datetime")), (float)object.getDouble("amount"), object.getInt("type"));
 	}
 
 }
