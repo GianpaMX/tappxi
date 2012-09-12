@@ -1,0 +1,71 @@
+<!-- Start Template -->
+<script type="text/html" id="taxi-list-template">
+
+<h2>Sitios de Taxis</h2>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Razon Social</th>
+      <th>Banderazo</th>
+      <th>Status</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for taxi in taxis %}
+    <tr>
+      <td>{{taxi.id}}</td>
+      <td>{{taxi.name}}</td>
+      <td>{{taxi.start_fare}}</td>
+      <td>{{taxi.status_name}}</td>
+      <td>
+        <a href="#taxi/edit/{{taxi.id}}" data-model-id="{{taxi.id}}" class="btn edit-taxi"><i class="icon-pencil"></i></a>
+        <a href="#taxi/delete/{{taxi.id}}" data-model-id="{{taxi.id}}" class="btn show-taxi"><i class="icon-trash"></i></a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+</script>
+
+<!-- Start Template -->
+<script type="text/html" id="taxi-edit-template">
+
+<form class="form-horizontal">
+  <fieldset>
+
+  <div class="control-group">
+    <label class="control-label" for="input01">Razon Social</label>
+    <div class="controls">
+      <input id="input01" type="text" value="{{name}}">
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="input01">Banderazo</label>
+    <div class="controls">
+      <input id="input01" type="text" value="{{start_fare}}">
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="input01">Status</label>
+    <div class="controls">
+      Activo: <input type="radio" name="status" {%if status %}checked="checked"{% endif %}>
+      Inactivo: <input type="radio" name="status" {%if status %}{%else%}checked="checked"{% endif %}>
+    </div>
+  </div>
+
+  <div class="control-actions">
+    <div class="controls">
+      <button type="button" class="btn btn-primary">Guardar</button>
+    </div>
+  </div>
+
+  </fieldset>
+</form>
+
+</script>

@@ -1,0 +1,66 @@
+<!-- Start Template -->
+<script type="text/html" id="request-list-template">
+
+<h2>Peticiones Pendientes</h2>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Persona</th>
+      <th>Direcci&oacute;n</th>
+	  <th>Referencias</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for request in requests %}
+    <tr>
+      <td>{{request.user.name}}</td>
+      <td>
+		{{request.start_address.street}}
+		{{request.start_address.settlement}}
+		{{request.start_address.city}}
+		{{request.start_address.state}}
+		{{request.start_address.street}}
+	  </td>
+      <td>{{request.start_address.reference}}</td>
+      <td>
+        <a href="#request/edit/{{request.id}}" data-model-id="{{request.id}}" class="btn edit-request"><i class="icon-envelope"></i></a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+</script>
+
+<!-- Start Template -->
+<script type="text/html" id="request-edit-template">
+
+<form class="form-horizontal">
+  <fieldset>
+
+  <div class="control-group">
+    <label class="control-label" for="input01">Tiempo Estimado de Llegada</label>
+    <div class="controls">
+      <input name="eta" id="eta" type="text" value="" required pattern="[0-9]{1,}">
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="input01">Costo Estimado</label>
+    <div class="controls">
+      <input type="text" id="fare" name="fare" value="" required pattern="[0-9]{1,}">
+    </div>
+  </div>
+
+  <div class="control-actions">
+    <div class="controls">
+      <button type="submit" class="btn btn-primary">Enviar Cotizacion</button>
+    </div>
+  </div>
+
+  </fieldset>
+</form>
+
+</script>

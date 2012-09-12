@@ -1,0 +1,50 @@
+<!-- Start Template -->
+<script type="text/html" id="user-list-template">
+
+<h2>Users</h2>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Username</th>
+      <th>Role</th>
+      <th>Status</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for user in users %}
+    <tr>
+      <td>{{user.id}}</td>
+      <td>{{user.username}}</td>
+      <td>{{roles[user.id_role]}}</td>
+      <td>{{user.status}}</td>
+      <td>
+        <a href="#user/edit/{{user.id}}" data-model-id="{{user.id}}" class="btn edit-user"><i class="icon-pencil"></i></a>
+        <a href="#user/show/{{user.id}}" data-model-id="{{user.id}}" class="btn show-user"><i class="icon-eye-open"></i></a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+</script>
+
+<!-- Start Template -->
+<script type="text/html" id="user-edit-template">
+  
+<form class="form-horizontal">
+  <fieldset>
+  
+  <div class="control-group">
+    <label class="control-label" for="input01">Username</label>
+    <div class="controls">
+      <input id="input01" type="text" value="{{username}}">
+    </div>
+  </div>
+
+  </fieldset>
+</form>
+
+</script>

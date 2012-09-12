@@ -20,6 +20,15 @@ gen/
 *.settings
 local.properties
 
-
 server-tappxi/.buildpath
-
+server-tappxi/.project
+server-tappxi/.settings/
+server-tappxi/web/bundles/
+server-tappxi/app/bootstrap.php.cache
+server-tappxi/app/cache/*
+server-tappxi/app/logs/*
+server-tappxi/build/
+server-tappxi/vendor
+server-tappxi/bin
+server-tappxi/composer.phar
+server-tappxi/src/Tappxi/Bundle/WebBundle/Resources/public/.sass-cache/
